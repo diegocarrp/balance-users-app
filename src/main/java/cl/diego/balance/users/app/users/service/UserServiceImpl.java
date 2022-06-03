@@ -1,7 +1,9 @@
 package cl.diego.balance.users.app.users.service;
 
 import cl.diego.balance.users.app.users.domain.User;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     @Override
