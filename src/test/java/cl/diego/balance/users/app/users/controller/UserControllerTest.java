@@ -16,11 +16,11 @@ class UserControllerTest {
 
     private UserController userController;
     @Mock
-    private UserService    userService;
+    private UserService userService;
 
     @BeforeEach
     void setUp() {
-        userService    = mock( UserServiceImpl.class );
+        userService = mock( UserServiceImpl.class );
         userController = new UserController( userService );
     }
 
@@ -34,8 +34,7 @@ class UserControllerTest {
                 .build();
 
         // Set Environment
-        when( userService.saveUser( user ) )
-                .thenReturn( true );
+        doNothing().when( userService ).saveUser( user );
 
         // Execute
         ResponseEntity reponse = userController.createUser( user );
@@ -58,8 +57,7 @@ class UserControllerTest {
                 .build();
 
         // Set Environment
-        when( userService.saveUser( user ) )
-                .thenReturn( false );
+        doNothing().when( userService).saveUser( user );
 
         // Execute
         ResponseEntity reponse = userController.createUser( user );
