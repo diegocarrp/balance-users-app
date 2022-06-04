@@ -1,6 +1,8 @@
 package cl.diego.balance.users.app.users.controller;
 
 import cl.diego.balance.users.app.users.domain.User;
+import cl.diego.balance.users.app.users.exception.BadInputException;
+import cl.diego.balance.users.app.users.exception.UserNotFoundException;
 import cl.diego.balance.users.app.users.service.UserService;
 import cl.diego.balance.users.app.users.service.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,11 +18,11 @@ class UserControllerTest {
 
     private UserController userController;
     @Mock
-    private UserService userService;
+    private UserService    userService;
 
     @BeforeEach
     void setUp() {
-        userService = mock( UserServiceImpl.class );
+        userService    = mock( UserServiceImpl.class );
         userController = new UserController( userService );
     }
 
@@ -40,7 +42,7 @@ class UserControllerTest {
         ResponseEntity reponse = userController.createUser( user );
 
         // Assertions
-        assertEquals( HttpStatus.CREATED, reponse.getStatusCode() );
+        assertEquals( HttpStatus.OK, reponse.getStatusCode() );
 
         // Verify
         verify( userService, times( 1 ) )
@@ -57,7 +59,7 @@ class UserControllerTest {
                 .build();
 
         // Set Environment
-        doNothing().when( userService).saveUser( user );
+        doThrow( new BadInputException( "" ) ).when( userService ).saveUser( user );
 
         // Execute
         ResponseEntity reponse = userController.createUser( user );
@@ -85,6 +87,27 @@ class UserControllerTest {
 
         // Assertions
         assertEquals( HttpStatus.OK, response.getStatusCode() );
+
+        // Verify
+        verify( userService, times( 1 ) )
+                .getUserByDni( any( String.class ) );
+    }
+
+    @Test
+    void getUserTest_error() {
+
+        // Prepare data
+        User user = User.builder().build();
+
+        // Set environment
+        when( userService.getUserByDni( any( String.class ) ) )
+                .thenThrow( new UserNotFoundException( "" ) );
+
+        // Execute
+        ResponseEntity response = userController.getUser( "12345678" );
+
+        // Assertions
+        assertEquals( HttpStatus.NOT_FOUND, response.getStatusCode() );
 
         // Verify
         verify( userService, times( 1 ) )

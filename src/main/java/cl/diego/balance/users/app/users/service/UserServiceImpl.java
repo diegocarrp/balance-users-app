@@ -1,6 +1,7 @@
 package cl.diego.balance.users.app.users.service;
 
 import cl.diego.balance.users.app.users.domain.User;
+import cl.diego.balance.users.app.users.exception.BadInputException;
 import cl.diego.balance.users.app.users.repository.UserEntity;
 import cl.diego.balance.users.app.users.repository.UsersRepository;
 import lombok.AllArgsConstructor;
@@ -15,18 +16,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser( User user ) {
 
-        UserEntity userEntity = UserEntity.builder()
-                .rut( user.getRut() )
-                .names( user.getNames() )
-                .lastname1( user.getLastname1() )
-                .lastname2( user.getLastname2() )
-                .email( user.getEmail() )
-                .role( user.getRole() )
-                .password( user.getPassword() )
-                .cellphone( user.getCellphone() )
-                .build();
+        try {
+            UserEntity userEntity = UserEntity.builder()
+                    .rut( user.getRut() )
+                    .names( user.getNames() )
+                    .lastname1( user.getLastname1() )
+                    .lastname2( user.getLastname2() )
+                    .email( user.getEmail() )
+                    .role( user.getRole() )
+                    .password( user.getPassword() )
+                    .cellphone( user.getCellphone() )
+                    .build();
 
-        usersRepository.save( userEntity );
+            usersRepository.save( userEntity );
+        } catch (Exception e) {
+            throw new BadInputException( "Error saving the user" );
+        }
+
     }
 
     @Override

@@ -3,7 +3,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/balance_users_db
     username: postgres
-    password: Tommy123
+    password: diego123
   jpa:
     properties:
       hibernate:
