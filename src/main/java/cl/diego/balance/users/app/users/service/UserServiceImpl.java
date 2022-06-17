@@ -23,6 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByRut( String rut ) {
+        if(rut.isEmpty()) {
+            log.info( "ghola" );
+        }
         UserEntity userDb = usersRepository.findByRut( rut )
                 .orElseThrow( () -> new UserNotFoundException( "User not found" ) );
         log.info("userFound: <{}>", userDb);
