@@ -50,7 +50,7 @@ public class UserController {
             log.info( "UserController.updateUser - body: <{}>", user );
             userService.updateUser( user );
             return ResponseEntity.ok().build();
-        } catch (UserNotFoundException e) {
+        } catch (BadInputException | UserNotFoundException e) {
             log.error( "UserController.updateUser: <{}>", e.getMessage() );
             throw new ResponseStatusException( HttpStatus.NOT_FOUND, e.getMessage(), e );
         }

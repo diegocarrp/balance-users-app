@@ -10,8 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class UserControllerTest {
@@ -21,28 +23,28 @@ class UserControllerTest {
     private UserService    userService;
 
     @BeforeEach
-    void setUp() {
+    void setUp( ) {
         userService    = mock( UserServiceImpl.class );
         userController = new UserController( userService );
     }
 
     @Test
-    void createUserTest() {
+    void createUserTest_ok( ) {
 
         // Prepare Data
-        User user = User.builder()
+        User user = User.builder( )
                 .password( "Tommy" )
                 .role( "ADMIN" )
-                .build();
+                .build( );
 
         // Set Environment
-        doNothing().when( userService ).saveUser( user );
+        doNothing( ).when( userService ).saveUser( user );
 
         // Execute
         ResponseEntity reponse = userController.createUser( user );
 
         // Assertions
-        assertEquals( HttpStatus.OK, reponse.getStatusCode() );
+        assertEquals( HttpStatus.OK, reponse.getStatusCode( ) );
 
         // Verify
         verify( userService, times( 1 ) )
@@ -50,22 +52,20 @@ class UserControllerTest {
     }
 
     @Test
-    void createUserTest_error() {
+    void createUserTest_error( ) {
 
         // Prepare Data
-        User user = User.builder()
+        User user = User.builder( )
                 .password( "Tommy" )
                 .role( "ADMIN" )
-                .build();
+                .build( );
 
         // Set Environment
-        doThrow( new BadInputException( "" ) ).when( userService ).saveUser( user );
+        doThrow( new BadInputException( "Error test" ) ).when( userService ).saveUser( user );
 
         // Execute
-        ResponseEntity reponse = userController.createUser( user );
-
         // Assertions
-        assertEquals( HttpStatus.BAD_REQUEST, reponse.getStatusCode() );
+        assertThrows( ResponseStatusException.class, ( ) -> userController.createUser( user ) );
 
         // Verify
         verify( userService, times( 1 ) )
@@ -73,10 +73,10 @@ class UserControllerTest {
     }
 
     @Test
-    void getUserTest() {
+    void getUserTest_ok( ) {
 
         // Prepare data
-        User user = User.builder().build();
+        User user = User.builder( ).build( );
 
         // Set environment
         when( userService.getUserByRut( any( String.class ) ) )
@@ -86,7 +86,7 @@ class UserControllerTest {
         ResponseEntity response = userController.getUser( "12345678" );
 
         // Assertions
-        assertEquals( HttpStatus.OK, response.getStatusCode() );
+        assertEquals( HttpStatus.OK, response.getStatusCode( ) );
 
         // Verify
         verify( userService, times( 1 ) )
@@ -94,23 +94,102 @@ class UserControllerTest {
     }
 
     @Test
-    void getUserTest_error() {
+    void getUserTest_error( ) {
 
         // Prepare data
-        User user = User.builder().build();
+        User user = User.builder( ).build( );
 
         // Set environment
         when( userService.getUserByRut( any( String.class ) ) )
-                .thenThrow( new UserNotFoundException( "" ) );
+                .thenThrow( new UserNotFoundException( "Error Test" ) );
 
         // Execute
-        ResponseEntity response = userController.getUser( "12345678" );
-
         // Assertions
-        assertEquals( HttpStatus.NOT_FOUND, response.getStatusCode() );
+        assertThrows( ResponseStatusException.class, ( ) -> userController.getUser( "12345678" ) );
 
         // Verify
         verify( userService, times( 1 ) )
                 .getUserByRut( any( String.class ) );
+    }
+
+    @Test
+    void updateUserTest_ok( ) {
+
+        // Prepare Data
+        User user = User.builder( )
+                .password( "Tommy" )
+                .role( "ADMIN" )
+                .build( );
+
+        // Set Environment
+        doNothing( ).when( userService ).updateUser( user );
+
+        // Execute
+        ResponseEntity reponse = userController.updateUser( user );
+
+        // Assertions
+        assertEquals( HttpStatus.OK, reponse.getStatusCode( ) );
+
+        // Verify
+        verify( userService, times( 1 ) )
+                .updateUser( any( User.class ) );
+    }
+
+    @Test
+    void updateUserTest_error( ) {
+
+        // Prepare Data
+        User user = User.builder( )
+                .password( "Tommy" )
+                .role( "ADMIN" )
+                .build( );
+
+        // Set Environment
+        doThrow( new BadInputException( "Error test" ) ).when( userService ).updateUser( user );
+
+        // Execute
+        // Assertions
+        assertThrows( ResponseStatusException.class, ( ) -> userController.updateUser( user ) );
+
+        // Verify
+        verify( userService, times( 1 ) )
+                .updateUser( any( User.class ) );
+    }
+
+    @Test
+    void deleteUserTest_ok( ) {
+
+        // Prepare data
+        User user = User.builder( ).build( );
+
+        // Set environment
+        doNothing( ).when( userService ).deleteUser( anyLong( ) );
+
+        // Execute
+        ResponseEntity response = userController.deleteUser( 1L );
+
+        // Assertions
+        assertEquals( HttpStatus.OK, response.getStatusCode( ) );
+
+        // Verify
+        verify( userService, times( 1 ) )
+                .deleteUser( anyLong( ) );
+    }
+
+    @Test
+    void deleteUserTest_error( ) {
+
+        // Prepare data
+
+        // Set environment
+        doThrow( new UserNotFoundException( "Error Test" ) ).when( userService ).deleteUser( anyLong( ) );
+
+        // Execute
+        // Assertions
+        assertThrows( ResponseStatusException.class, ( ) -> userController.deleteUser( 1L ) );
+
+        // Verify
+        verify( userService, times( 1 ) )
+                .deleteUser( anyLong( ) );
     }
 }
