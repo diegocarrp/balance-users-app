@@ -5,7 +5,11 @@ import cl.diego.balance.users.app.users.exception.BadInputException;
 import cl.diego.balance.users.app.users.exception.UserNotFoundException;
 
 public interface UserService {
-    void saveUser(User user ) throws BadInputException;
+    void saveUser( User user ) throws BadInputException;
 
-    User getUserByDni( String dni ) throws UserNotFoundException;
+    User getUserByRut( String dni ) throws UserNotFoundException;
+
+    void updateUser (User user) throws BadInputException;
+
+    void deleteUser( Long id );
 }

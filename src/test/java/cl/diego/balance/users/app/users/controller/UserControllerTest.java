@@ -79,7 +79,7 @@ class UserControllerTest {
         User user = User.builder().build();
 
         // Set environment
-        when( userService.getUserByDni( any( String.class ) ) )
+        when( userService.getUserByRut( any( String.class ) ) )
                 .thenReturn( user );
 
         // Execute
@@ -90,7 +90,7 @@ class UserControllerTest {
 
         // Verify
         verify( userService, times( 1 ) )
-                .getUserByDni( any( String.class ) );
+                .getUserByRut( any( String.class ) );
     }
 
     @Test
@@ -100,7 +100,7 @@ class UserControllerTest {
         User user = User.builder().build();
 
         // Set environment
-        when( userService.getUserByDni( any( String.class ) ) )
+        when( userService.getUserByRut( any( String.class ) ) )
                 .thenThrow( new UserNotFoundException( "" ) );
 
         // Execute
@@ -111,6 +111,6 @@ class UserControllerTest {
 
         // Verify
         verify( userService, times( 1 ) )
-                .getUserByDni( any( String.class ) );
+                .getUserByRut( any( String.class ) );
     }
 }
