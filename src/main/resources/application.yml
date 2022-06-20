@@ -1,9 +1,9 @@
 #==== connect to postgreSQL ======#
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/balance_users_db
-    username: postgres
-    password: diego123
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USER}
+    password: ${DATASOURCE_PASSWORD}
   jpa:
     properties:
       hibernate:
@@ -13,6 +13,3 @@ spring:
           use_jdbc_metadata_defaults: false
     # Because detection is disabled you have to set correct dialect by hand.
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
-    # seems like we don't need to put the below driver properties in application.properties file for latest version of postgreSQL.
-    datasource:
-      driver-class-name: org.postgresql.Driver
