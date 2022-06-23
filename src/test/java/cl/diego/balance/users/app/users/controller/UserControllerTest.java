@@ -61,7 +61,7 @@ class UserControllerTest {
                 .build( );
 
         // Set Environment
-        doThrow( new BadInputException( "Error test" ) ).when( userService ).saveUser( user );
+        doThrow( new BadInputException( ) ).when( userService ).saveUser( user );
 
         // Execute
         // Assertions
@@ -101,7 +101,7 @@ class UserControllerTest {
 
         // Set environment
         when( userService.getUserByRut( any( String.class ) ) )
-                .thenThrow( new UserNotFoundException( "Error Test" ) );
+                .thenThrow( new UserNotFoundException( ) );
 
         // Execute
         // Assertions
@@ -145,7 +145,7 @@ class UserControllerTest {
                 .build( );
 
         // Set Environment
-        doThrow( new BadInputException( "Error test" ) ).when( userService ).updateUser( user );
+        doThrow( new BadInputException( ) ).when( userService ).updateUser( user );
 
         // Execute
         // Assertions
@@ -182,7 +182,7 @@ class UserControllerTest {
         // Prepare data
 
         // Set environment
-        doThrow( new UserNotFoundException( "Error Test" ) ).when( userService ).deleteUser( anyLong( ) );
+        doThrow( new UserNotFoundException( ) ).when( userService ).deleteUser( anyLong( ) );
 
         // Execute
         // Assertions

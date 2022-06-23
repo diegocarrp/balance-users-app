@@ -34,14 +34,9 @@ public class UserController {
 
     @GetMapping( "/rut/{rut}" )
     public ResponseEntity<User> getUser( @PathVariable String rut ) {
-        try {
-            log.info( "UserController.getUser - rut: <{}>", rut );
-            User userFound = userService.getUserByRut( rut );
-            return new ResponseEntity<>( userFound, HttpStatus.OK );
-        } catch (UserNotFoundException e) {
-            log.error( "UserController.getUser: <{}>", e.getMessage() );
-            throw new ResponseStatusException( HttpStatus.NOT_FOUND, e.getMessage(), e );
-        }
+        log.info( "UserController.getUser - rut: <{}>", rut );
+        User userFound = userService.getUserByRut( rut );
+        return new ResponseEntity<>( userFound, HttpStatus.OK );
     }
 
     @PutMapping( "/update" )
