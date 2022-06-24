@@ -1,5 +1,6 @@
 package cl.diego.balance.users.app.users.controller;
 
+import cl.diego.balance.commons.rest.exception.ApiException;
 import cl.diego.balance.users.app.users.domain.User;
 import cl.diego.balance.users.app.users.exception.BadInputException;
 import cl.diego.balance.users.app.users.exception.UserNotFoundException;
@@ -65,7 +66,7 @@ class UserControllerTest {
 
         // Execute
         // Assertions
-        assertThrows( ResponseStatusException.class, ( ) -> userController.createUser( user ) );
+        assertThrows( ApiException.class, ( ) -> userController.createUser( user ) );
 
         // Verify
         verify( userService, times( 1 ) )
@@ -105,7 +106,7 @@ class UserControllerTest {
 
         // Execute
         // Assertions
-        assertThrows( ResponseStatusException.class, ( ) -> userController.getUser( "12345678" ) );
+        assertThrows( ApiException.class, () -> userController.getUser( "12345678" ) );
 
         // Verify
         verify( userService, times( 1 ) )
@@ -149,7 +150,7 @@ class UserControllerTest {
 
         // Execute
         // Assertions
-        assertThrows( ResponseStatusException.class, ( ) -> userController.updateUser( user ) );
+        assertThrows( ApiException.class, ( ) -> userController.updateUser( user ) );
 
         // Verify
         verify( userService, times( 1 ) )
@@ -186,7 +187,7 @@ class UserControllerTest {
 
         // Execute
         // Assertions
-        assertThrows( ResponseStatusException.class, ( ) -> userController.deleteUser( 1L ) );
+        assertThrows( ApiException.class, ( ) -> userController.deleteUser( 1L ) );
 
         // Verify
         verify( userService, times( 1 ) )

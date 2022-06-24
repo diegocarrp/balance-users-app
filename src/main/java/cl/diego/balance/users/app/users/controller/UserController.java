@@ -21,15 +21,9 @@ public class UserController {
 
     @PostMapping( "/create" )
     public ResponseEntity<Boolean> createUser( @RequestBody User user ) {
-        try {
-            log.info( "UserController.createUser - body: <{}>", user );
-            userService.saveUser( user );
-            return ResponseEntity.ok().build();
-        } catch (BadInputException e) {
-            log.error( "UserController.createUser: <{}>", e.getMessage(), e );
-            throw new ResponseStatusException( HttpStatus.BAD_REQUEST, e.getMessage(), e );
-        }
-
+        log.info( "UserController.createUser - body: <{}>", user );
+        userService.saveUser( user );
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping( "/rut/{rut}" )
@@ -41,26 +35,16 @@ public class UserController {
 
     @PutMapping( "/update" )
     public ResponseEntity<User> updateUser( @RequestBody User user ) {
-        try {
-            log.info( "UserController.updateUser - body: <{}>", user );
-            userService.updateUser( user );
-            return ResponseEntity.ok().build();
-        } catch (BadInputException | UserNotFoundException e) {
-            log.error( "UserController.updateUser: <{}>", e.getMessage() );
-            throw new ResponseStatusException( HttpStatus.NOT_FOUND, e.getMessage(), e );
-        }
+        log.info( "UserController.updateUser - body: <{}>", user );
+        userService.updateUser( user );
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping( "/id/{id}" )
     public ResponseEntity<User> deleteUser( @PathVariable Long id ) {
-        try {
-            log.info( "UserController.deleteUser - id: <{}>", id );
-            userService.deleteUser( id );
-            return ResponseEntity.ok().build();
-        } catch (UserNotFoundException e) {
-            log.error( "UserController.deleteUser: <{}>", e.getMessage() );
-            throw new ResponseStatusException( HttpStatus.NOT_FOUND, e.getMessage(), e );
-        }
+        log.info( "UserController.deleteUser - id: <{}>", id );
+        userService.deleteUser( id );
+        return ResponseEntity.ok().build();
     }
 }
 

@@ -8,7 +8,6 @@ import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Builder
@@ -22,7 +21,7 @@ public class ApiError {
     private String        message;
     private String        debugMessage;
 
-    private ApiError( ) {
+    ApiError( ) {
         timestamp = LocalDateTime.now( );
     }
 
@@ -32,11 +31,20 @@ public class ApiError {
     }
 
     ApiError( HttpStatus status,
-              Throwable ex ) {
+              String message ) {
         this( );
         this.status    = status;
-        this.message   = "Unexpected error";
+        this.message   = message;
         this.timestamp = LocalDateTime.now( );
+    }
+
+    ApiError( HttpStatus status,
+              Throwable ex ) {
+        this( );
+        this.status       = status;
+        this.message      = "Unexpected error";
+        this.debugMessage = ex.getLocalizedMessage( );
+        this.timestamp    = LocalDateTime.now( );
     }
 
     ApiError( HttpStatus status,
