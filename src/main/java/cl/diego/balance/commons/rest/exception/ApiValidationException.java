@@ -12,14 +12,14 @@ public class ApiValidationException extends ApiException {
 
     private List<ApiSubError> subErrors;
 
-    public ApiValidationException (List<String> descriptions) {
+    public ApiValidationException( List<String> descriptions ) {
         super( HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error" );
         this.subErrors = mapSubErrors( descriptions );
     }
 
     public ApiValidationException( String message,
                                    List<String> descriptions ) {
-        super( HttpStatus.BAD_REQUEST, message);
+        super( HttpStatus.BAD_REQUEST, message );
         this.subErrors = mapSubErrors( descriptions );
     }
 

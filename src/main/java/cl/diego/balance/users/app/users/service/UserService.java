@@ -9,7 +9,7 @@ public interface UserService {
 
     User getUserByRut( String dni ) throws UserNotFoundException;
 
-    void updateUser (User user) throws BadInputException;
+    void updateUser( User user ) throws BadInputException;
 
     void deleteUser( Long id );
 }

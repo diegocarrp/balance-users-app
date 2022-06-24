@@ -8,10 +8,10 @@ import cl.diego.balance.users.app.users.repository.UserEntity;
 import cl.diego.balance.users.app.users.repository.UsersRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import org.springframework.stereotype.Service;
-import jakarta.validation.Validator;
 
 import java.util.List;
 import java.util.Set;
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
                 .map( v -> v.getPropertyPath( ) + " - " + v.getMessage( ) )
                 .collect( Collectors.toList( ) );
 
-        if (!descriptions.isEmpty( ))
+        if( !descriptions.isEmpty( ) )
             throw new ApiValidationException( "User wasn't created because of: ", descriptions );
     }
 }

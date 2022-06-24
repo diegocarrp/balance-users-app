@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Person {
 
-    private Long id;
+    private Long   id;
     @NotBlank
     private String rut;
     @NotBlank

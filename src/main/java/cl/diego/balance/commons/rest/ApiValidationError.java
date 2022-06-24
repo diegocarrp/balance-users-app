@@ -10,7 +10,7 @@ public class ApiValidationError extends ApiError {
     private List<ApiSubError> subErrors;
 
     ApiValidationError( ApiValidationException ex ) {
-        super( ex.getStatus(), ex.getMessage() );
-        this.subErrors = ex.getSubErrors();
+        super( ex.getStatus( ), ex.getMessage( ) );
+        this.subErrors = ex.getSubErrors( );
     }
 }

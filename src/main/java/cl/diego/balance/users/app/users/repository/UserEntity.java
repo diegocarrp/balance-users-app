@@ -17,7 +17,7 @@ public class UserEntity {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private Long id;
+    private Long   id;
     private String rut;
     private String email;
     private String names;
