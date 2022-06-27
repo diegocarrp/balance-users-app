@@ -33,13 +33,14 @@ class UserServiceImplTest {
     @Test
     void saveUserTest_ok( ) {
         // Prepare data
+        User user = new User( "Tommy", "1", "Carreno", "Gonzalez", "tommy@carreno.cl", "983714551", "1", "OLIWI" );
 
         // Set environment
         when( usersRepository.save( any( UserEntity.class ) ) )
                 .thenReturn( new UserEntity( ) );
 
         //Execute
-        userService.saveUser( new User( ) );
+        userService.saveUser( user );
 
         //Assertions
 
@@ -84,7 +85,7 @@ class UserServiceImplTest {
     @Test
     void updateUserTest_ok( ) {
         // Prepare data
-        User user = new User(  );
+        User user = new User( );
         user.setRut( "1-1" );
         // Set environment
         when( usersRepository.findByRut( "1-1" ) )
@@ -106,7 +107,7 @@ class UserServiceImplTest {
         // Prepare data
 
         // Set environment
-        doNothing().when( usersRepository ).deleteById( anyLong() );
+        doNothing( ).when( usersRepository ).deleteById( anyLong( ) );
 
         // Execute
         userService.deleteUser( 1L );
@@ -114,6 +115,6 @@ class UserServiceImplTest {
         //Assertions
 
         // Verify
-        verify( usersRepository ).deleteById( anyLong() );
+        verify( usersRepository ).deleteById( anyLong( ) );
     }
 }

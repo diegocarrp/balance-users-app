@@ -20,6 +20,31 @@ public class User extends Person {
     @NotBlank
     private String role;
 
+    public User( String names,
+          String rut,
+          String lastname1,
+          String lastname2,
+          String email,
+          String cellphone,
+          String password,
+          String role ) {
+        super( rut, email, names, lastname1, lastname2, cellphone );
+        this.password = password;
+        this.role     = role;
+    }
+
+    public User( String names,
+          String rut,
+          String lastname1,
+          String email,
+          String cellphone,
+          String password,
+          String role ) {
+        super( rut, email, names, lastname1, cellphone );
+        this.password = password;
+        this.role     = role;
+    }
+
     @Override
     public String toString( ) {
         return "User{" +
