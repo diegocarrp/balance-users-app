@@ -1,10 +1,10 @@
 package cl.diego.balance.users.app.users.service;
 
 import cl.diego.balance.commons.rest.exception.ApiValidationException;
-import cl.diego.balance.users.app.users.domain.User;
+import cl.diego.balance.users.app.users.domain.UserDto;
 import cl.diego.balance.users.app.users.exception.BadInputException;
 import cl.diego.balance.users.app.users.exception.UserNotFoundException;
-import cl.diego.balance.users.app.users.repository.UserEntity;
+import cl.diego.balance.users.app.users.repository.User;
 import cl.diego.balance.users.app.users.repository.UsersRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -34,24 +34,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser( User user ) {
+    public void saveUser( UserDto user ) {
         validateUser( user );
-        usersRepository.save( new UserEntity( user ) );
+        usersRepository.save( new User( user ) );
     }
 
     @Override
-    public User getUserByRut( String rut ) {
-        UserEntity userDb = usersRepository.findByRut( rut )
+    public UserDto getUserByRut( String rut ) {
+        User userDb = usersRepository.findByRut( rut )
                 .orElseThrow( UserNotFoundException::new );
         log.info( "userFound: <{}>", userDb );
         return userDb.toUser( );
     }
 
     @Override
-    public void updateUser( User user ) throws BadInputException {
-        User userDb = getUserByRut( user.getRut( ) );
+    public void updateUser( UserDto user ) throws BadInputException {
+        UserDto userDb = getUserByRut( user.getRut( ) );
         userDb.updateUser( user );
-        usersRepository.save( new UserEntity( user ) );
+        usersRepository.save( new User( user ) );
     }
 
     @Override
@@ -59,8 +59,8 @@ public class UserServiceImpl implements UserService {
         usersRepository.deleteById( id );
     }
 
-    private void validateUser( User user ) {
-        Set<ConstraintViolation<User>> violations = validator.validate( user );
+    private void validateUser( UserDto user ) {
+        Set<ConstraintViolation<UserDto>> violations = validator.validate( user );
         List<String> descriptions = violations.stream( )
                 .map( v -> v.getPropertyPath( ) + " - " + v.getMessage( ) )
                 .collect( Collectors.toList( ) );

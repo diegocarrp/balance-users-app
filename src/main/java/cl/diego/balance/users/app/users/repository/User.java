@@ -1,6 +1,6 @@
 package cl.diego.balance.users.app.users.repository;
 
-import cl.diego.balance.users.app.users.domain.User;
+import cl.diego.balance.users.app.users.domain.UserDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,9 +11,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table( schema = "public", name = "users" )
+@Table( schema = "public", name = "account" )
 @ToString
-public class UserEntity {
+public class User {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -27,7 +27,7 @@ public class UserEntity {
     private String password;
     private String role;
 
-    public UserEntity( User user ) {
+    public User( UserDto user ) {
         this.rut       = user.getRut( );
         this.id        = user.getId( );
         this.email     = user.getEmail( );
@@ -39,9 +39,9 @@ public class UserEntity {
         this.cellphone = user.getCellphone( );
     }
 
-    public User toUser( ) {
+    public UserDto toUser( ) {
 
-        User user = User.builder( )
+        UserDto user = UserDto.builder( )
                 .role( this.role )
                 .build( );
 

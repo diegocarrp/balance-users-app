@@ -1,4 +1,4 @@
-CREATE TABLE users
+CREATE TABLE person
 (
     id SERIAL NOT NULL,
     rut varchar(12) NOT NULL,
@@ -7,7 +7,5 @@ CREATE TABLE users
     lastname1 varchar(255) NOT NULL,
     lastname2 varchar(255) NOT NULL,
     cellphone varchar(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    role varchar(255) NOT NULL,
     PRIMARY KEY (id)
 );

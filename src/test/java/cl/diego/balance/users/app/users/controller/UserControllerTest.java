@@ -1,7 +1,7 @@
 package cl.diego.balance.users.app.users.controller;
 
 import cl.diego.balance.commons.rest.exception.ApiException;
-import cl.diego.balance.users.app.users.domain.User;
+import cl.diego.balance.users.app.users.domain.UserDto;
 import cl.diego.balance.users.app.users.exception.BadInputException;
 import cl.diego.balance.users.app.users.exception.UserNotFoundException;
 import cl.diego.balance.users.app.users.service.UserService;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -33,7 +32,7 @@ class UserControllerTest {
     void createUserTest_ok( ) {
 
         // Prepare Data
-        User user = User.builder( )
+        UserDto user = UserDto.builder( )
                 .password( "Tommy" )
                 .role( "ADMIN" )
                 .build( );
@@ -49,14 +48,14 @@ class UserControllerTest {
 
         // Verify
         verify( userService, times( 1 ) )
-                .saveUser( any( User.class ) );
+                .saveUser( any( UserDto.class ) );
     }
 
     @Test
     void createUserTest_error( ) {
 
         // Prepare Data
-        User user = User.builder( )
+        UserDto user = UserDto.builder( )
                 .password( "Tommy" )
                 .role( "ADMIN" )
                 .build( );
@@ -70,14 +69,14 @@ class UserControllerTest {
 
         // Verify
         verify( userService, times( 1 ) )
-                .saveUser( any( User.class ) );
+                .saveUser( any( UserDto.class ) );
     }
 
     @Test
     void getUserTest_ok( ) {
 
         // Prepare data
-        User user = User.builder( ).build( );
+        UserDto user = UserDto.builder( ).build( );
 
         // Set environment
         when( userService.getUserByRut( any( String.class ) ) )
@@ -98,7 +97,7 @@ class UserControllerTest {
     void getUserTest_error( ) {
 
         // Prepare data
-        User user = User.builder( ).build( );
+        UserDto user = UserDto.builder( ).build( );
 
         // Set environment
         when( userService.getUserByRut( any( String.class ) ) )
@@ -117,7 +116,7 @@ class UserControllerTest {
     void updateUserTest_ok( ) {
 
         // Prepare Data
-        User user = User.builder( )
+        UserDto user = UserDto.builder( )
                 .password( "Tommy" )
                 .role( "ADMIN" )
                 .build( );
@@ -133,14 +132,14 @@ class UserControllerTest {
 
         // Verify
         verify( userService, times( 1 ) )
-                .updateUser( any( User.class ) );
+                .updateUser( any( UserDto.class ) );
     }
 
     @Test
     void updateUserTest_error( ) {
 
         // Prepare Data
-        User user = User.builder( )
+        UserDto user = UserDto.builder( )
                 .password( "Tommy" )
                 .role( "ADMIN" )
                 .build( );
@@ -154,14 +153,14 @@ class UserControllerTest {
 
         // Verify
         verify( userService, times( 1 ) )
-                .updateUser( any( User.class ) );
+                .updateUser( any( UserDto.class ) );
     }
 
     @Test
     void deleteUserTest_ok( ) {
 
         // Prepare data
-        User user = User.builder( ).build( );
+        UserDto user = UserDto.builder( ).build( );
 
         // Set environment
         doNothing( ).when( userService ).deleteUser( anyLong( ) );

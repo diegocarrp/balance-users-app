@@ -1,8 +1,8 @@
 package cl.diego.balance.users.app.users.service;
 
-import cl.diego.balance.users.app.users.domain.User;
+import cl.diego.balance.users.app.users.domain.UserDto;
 import cl.diego.balance.users.app.users.exception.UserNotFoundException;
-import cl.diego.balance.users.app.users.repository.UserEntity;
+import cl.diego.balance.users.app.users.repository.User;
 import cl.diego.balance.users.app.users.repository.UsersRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,11 +33,11 @@ class UserServiceImplTest {
     @Test
     void saveUserTest_ok( ) {
         // Prepare data
-        User user = new User( "Tommy", "1", "Carreno", "Gonzalez", "tommy@carreno.cl", "983714551", "1", "OLIWI" );
+        UserDto user = new UserDto( "Tommy", "1", "Carreno", "Gonzalez", "tommy@carreno.cl", "983714551", "1", "OLIWI" );
 
         // Set environment
-        when( usersRepository.save( any( UserEntity.class ) ) )
-                .thenReturn( new UserEntity( ) );
+        when( usersRepository.save( any( User.class ) ) )
+                .thenReturn( new User( ) );
 
         //Execute
         userService.saveUser( user );
@@ -45,7 +45,7 @@ class UserServiceImplTest {
         //Assertions
 
         // Verify
-        verify( usersRepository ).save( any( UserEntity.class ) );
+        verify( usersRepository ).save( any( User.class ) );
     }
 
     @Test
@@ -54,10 +54,10 @@ class UserServiceImplTest {
 
         // Set environment
         when( usersRepository.findByRut( anyString( ) ) )
-                .thenReturn( Optional.of( new UserEntity( ) ) );
+                .thenReturn( Optional.of( new User( ) ) );
 
         // Execute
-        User user = userService.getUserByRut( "1-1" );
+        UserDto user = userService.getUserByRut( "1-1" );
 
         // Assertions
         assertNotNull( user );
@@ -85,13 +85,13 @@ class UserServiceImplTest {
     @Test
     void updateUserTest_ok( ) {
         // Prepare data
-        User user = new User( );
+        UserDto user = new UserDto( );
         user.setRut( "1-1" );
         // Set environment
         when( usersRepository.findByRut( "1-1" ) )
-                .thenReturn( Optional.of( new UserEntity( ) ) );
-        when( usersRepository.save( any( UserEntity.class ) ) )
-                .thenReturn( new UserEntity( ) );
+                .thenReturn( Optional.of( new User( ) ) );
+        when( usersRepository.save( any( User.class ) ) )
+                .thenReturn( new User( ) );
 
         // Execute
         userService.updateUser( user );
@@ -99,7 +99,7 @@ class UserServiceImplTest {
         //Assertions
 
         // Verify
-        verify( usersRepository ).save( any( UserEntity.class ) );
+        verify( usersRepository ).save( any( User.class ) );
     }
 
     @Test

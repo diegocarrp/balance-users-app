@@ -1,15 +1,15 @@
 package cl.diego.balance.users.app.users.service;
 
-import cl.diego.balance.users.app.users.domain.User;
+import cl.diego.balance.users.app.users.domain.UserDto;
 import cl.diego.balance.users.app.users.exception.BadInputException;
 import cl.diego.balance.users.app.users.exception.UserNotFoundException;
 
 public interface UserService {
-    void saveUser( User user ) throws BadInputException;
+    void saveUser( UserDto user ) throws BadInputException;
 
-    User getUserByRut( String dni ) throws UserNotFoundException;
+    UserDto getUserByRut( String rut ) throws UserNotFoundException;
 
-    void updateUser( User user ) throws BadInputException;
+    void updateUser( UserDto user ) throws BadInputException;
 
     void deleteUser( Long id );
 }

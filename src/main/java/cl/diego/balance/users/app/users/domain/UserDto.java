@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude( JsonInclude.Include.NON_NULL )
-public class User extends Person {
+public class UserDto extends PersonDto {
 
     @NotBlank
     private String password;
@@ -20,26 +20,26 @@ public class User extends Person {
     @NotBlank
     private String role;
 
-    public User( String names,
-          String rut,
-          String lastname1,
-          String lastname2,
-          String email,
-          String cellphone,
-          String password,
-          String role ) {
+    public UserDto( String names,
+                    String rut,
+                    String lastname1,
+                    String lastname2,
+                    String email,
+                    String cellphone,
+                    String password,
+                    String role ) {
         super( rut, email, names, lastname1, lastname2, cellphone );
         this.password = password;
         this.role     = role;
     }
 
-    public User( String names,
-          String rut,
-          String lastname1,
-          String email,
-          String cellphone,
-          String password,
-          String role ) {
+    public UserDto( String names,
+                    String rut,
+                    String lastname1,
+                    String email,
+                    String cellphone,
+                    String password,
+                    String role ) {
         super( rut, email, names, lastname1, cellphone );
         this.password = password;
         this.role     = role;
@@ -60,7 +60,7 @@ public class User extends Person {
                 '}';
     }
 
-    public void updateUser( User user ) {
+    public void updateUser( UserDto user ) {
         this.setNames( user.getNames( ) );
         this.setLastname1( user.getLastname1( ) );
         this.setLastname2( user.getLastname2( ) );

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Person {
+public class PersonDto {
 
     private Long   id;
     @NotBlank
@@ -25,12 +25,12 @@ public class Person {
     @NotBlank
     private String cellphone;
 
-    Person( String rut,
-            String email,
-            String names,
-            String lastname1,
-            String lastname2,
-            String cellphone ) {
+    PersonDto( String rut,
+               String email,
+               String names,
+               String lastname1,
+               String lastname2,
+               String cellphone ) {
         this.rut       = rut;
         this.email     = email;
         this.names     = names;
@@ -39,11 +39,11 @@ public class Person {
         this.cellphone = cellphone;
     }
 
-    Person( String rut,
-            String email,
-            String names,
-            String lastname1,
-            String cellphone ) {
+    PersonDto( String rut,
+               String email,
+               String names,
+               String lastname1,
+               String cellphone ) {
         this.rut       = rut;
         this.email     = email;
         this.names     = names;

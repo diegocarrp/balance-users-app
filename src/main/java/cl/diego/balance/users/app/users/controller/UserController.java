@@ -1,6 +1,6 @@
 package cl.diego.balance.users.app.users.controller;
 
-import cl.diego.balance.users.app.users.domain.User;
+import cl.diego.balance.users.app.users.domain.UserDto;
 import cl.diego.balance.users.app.users.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,28 +17,28 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping( "/create" )
-    public ResponseEntity<Boolean> createUser( @RequestBody User user ) {
+    public ResponseEntity<Boolean> createUser( @RequestBody UserDto user ) {
         log.info( "UserController.createUser - body: <{}>", user );
         userService.saveUser( user );
         return ResponseEntity.ok( ).build( );
     }
 
     @GetMapping( "/rut/{rut}" )
-    public ResponseEntity<User> getUser( @PathVariable String rut ) {
+    public ResponseEntity<UserDto> getUser( @PathVariable String rut ) {
         log.info( "UserController.getUser - rut: <{}>", rut );
-        User userFound = userService.getUserByRut( rut );
+        UserDto userFound = userService.getUserByRut( rut );
         return new ResponseEntity<>( userFound, HttpStatus.OK );
     }
 
     @PutMapping( "/update" )
-    public ResponseEntity<User> updateUser( @RequestBody User user ) {
+    public ResponseEntity<UserDto> updateUser( @RequestBody UserDto user ) {
         log.info( "UserController.updateUser - body: <{}>", user );
         userService.updateUser( user );
         return ResponseEntity.ok( ).build( );
     }
 
     @DeleteMapping( "/id/{id}" )
-    public ResponseEntity<User> deleteUser( @PathVariable Long id ) {
+    public ResponseEntity<UserDto> deleteUser( @PathVariable Long id ) {
         log.info( "UserController.deleteUser - id: <{}>", id );
         userService.deleteUser( id );
         return ResponseEntity.ok( ).build( );
