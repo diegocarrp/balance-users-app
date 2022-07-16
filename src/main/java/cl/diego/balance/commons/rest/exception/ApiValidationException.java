@@ -1,6 +1,6 @@
 package cl.diego.balance.commons.rest.exception;
 
-import cl.diego.balance.commons.rest.ApiSubError;
+import cl.diego.balance.commons.rest.domain.ApiSubError;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 

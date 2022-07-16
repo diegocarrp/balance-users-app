@@ -1,10 +1,10 @@
 package cl.diego.balance.users.app.users.service;
 
 import cl.diego.balance.commons.rest.exception.ApiValidationException;
-import cl.diego.balance.users.app.users.domain.UserDto;
+import cl.diego.balance.users.app.users.dto.UserDto;
 import cl.diego.balance.users.app.users.exception.BadInputException;
 import cl.diego.balance.users.app.users.exception.UserNotFoundException;
-import cl.diego.balance.users.app.users.repository.User;
+import cl.diego.balance.users.app.users.repository.domain.User;
 import cl.diego.balance.users.app.users.repository.UsersRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;

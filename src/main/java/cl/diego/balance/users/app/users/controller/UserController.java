@@ -1,6 +1,6 @@
 package cl.diego.balance.users.app.users.controller;
 
-import cl.diego.balance.users.app.users.domain.UserDto;
+import cl.diego.balance.users.app.users.dto.UserDto;
 import cl.diego.balance.users.app.users.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

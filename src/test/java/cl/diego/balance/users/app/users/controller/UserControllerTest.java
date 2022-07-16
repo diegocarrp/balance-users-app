@@ -1,7 +1,7 @@
 package cl.diego.balance.users.app.users.controller;
 
 import cl.diego.balance.commons.rest.exception.ApiException;
-import cl.diego.balance.users.app.users.domain.UserDto;
+import cl.diego.balance.users.app.users.dto.UserDto;
 import cl.diego.balance.users.app.users.exception.BadInputException;
 import cl.diego.balance.users.app.users.exception.UserNotFoundException;
 import cl.diego.balance.users.app.users.service.UserService;

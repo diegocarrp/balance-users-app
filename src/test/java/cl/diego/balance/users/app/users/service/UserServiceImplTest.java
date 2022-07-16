@@ -1,8 +1,8 @@
 package cl.diego.balance.users.app.users.service;
 
-import cl.diego.balance.users.app.users.domain.UserDto;
+import cl.diego.balance.users.app.users.dto.UserDto;
 import cl.diego.balance.users.app.users.exception.UserNotFoundException;
-import cl.diego.balance.users.app.users.repository.User;
+import cl.diego.balance.users.app.users.repository.domain.User;
 import cl.diego.balance.users.app.users.repository.UsersRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
