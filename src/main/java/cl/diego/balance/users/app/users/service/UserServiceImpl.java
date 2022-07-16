@@ -5,7 +5,7 @@ import cl.diego.balance.users.app.users.dto.UserDto;
 import cl.diego.balance.users.app.users.exception.BadInputException;
 import cl.diego.balance.users.app.users.exception.UserNotFoundException;
 import cl.diego.balance.users.app.users.repository.domain.User;
-import cl.diego.balance.users.app.users.repository.UsersRepository;
+import cl.diego.balance.users.app.users.repository.UserRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -21,10 +21,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    private final UsersRepository usersRepository;
-    private final Validator       validator;
+    private final UserRepository usersRepository;
+    private final Validator      validator;
 
-    public UserServiceImpl( UsersRepository usersRepository ) {
+    public UserServiceImpl( UserRepository usersRepository ) {
         this.usersRepository = usersRepository;
         this.validator       = Validation.byDefaultProvider( )
                 .configure( )
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser( UserDto user ) throws BadInputException {
         UserDto userDb = getUserByRut( user.getRut( ) );
         userDb.updateUser( user );
-        usersRepository.save( new User( user ) );
+        usersRepository.save( new User( userDb ) );
     }
 
     @Override
@@ -65,7 +65,8 @@ public class UserServiceImpl implements UserService {
                 .map( v -> v.getPropertyPath( ) + " - " + v.getMessage( ) )
                 .collect( Collectors.toList( ) );
 
-        if( !descriptions.isEmpty( ) )
+        if( !descriptions.isEmpty( ) ){
             throw new ApiValidationException( "User wasn't created because of: ", descriptions );
+        }
     }
 }

@@ -46,7 +46,6 @@ public class User {
         UserDto user = UserDto.builder( )
                 .role( this.role.toRole() )
                 .build( );
-        user.setRole( this.role.toRole() );
         user.setId( this.id );
         user.setRut( this.rut );
         user.setNames( this.names );

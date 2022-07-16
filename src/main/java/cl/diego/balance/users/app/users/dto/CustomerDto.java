@@ -3,12 +3,15 @@ package cl.diego.balance.users.app.users.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder
 public class CustomerDto {
 
     private Long   id;
@@ -51,4 +54,11 @@ public class CustomerDto {
         this.cellphone = cellphone;
     }
 
+    public void updateCustomer( CustomerDto customer ) {
+        this.setNames( customer.getNames( ) );
+        this.setLastname1( customer.getLastname1( ) );
+        this.setLastname2( customer.getLastname2( ) );
+        this.setEmail( customer.getEmail( ) );
+        this.setCellphone( customer.getCellphone( ) );
+    }
 }

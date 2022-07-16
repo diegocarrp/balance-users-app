@@ -1,9 +1,11 @@
 package cl.diego.balance.users.app.users.service;
 
+import cl.diego.balance.users.app.users.dto.RoleDto;
 import cl.diego.balance.users.app.users.dto.UserDto;
 import cl.diego.balance.users.app.users.exception.UserNotFoundException;
+import cl.diego.balance.users.app.users.repository.domain.Role;
 import cl.diego.balance.users.app.users.repository.domain.User;
-import cl.diego.balance.users.app.users.repository.UsersRepository;
+import cl.diego.balance.users.app.users.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -19,21 +21,25 @@ import static org.mockito.Mockito.*;
 class UserServiceImplTest {
 
     @Mock
-    private UsersRepository usersRepository;
+    private UserRepository usersRepository;
 
     @Autowired
     private UserService userService;
 
     @BeforeEach
     void setUp( ) {
-        usersRepository = mock( UsersRepository.class );
+        usersRepository = mock( UserRepository.class );
         userService     = new UserServiceImpl( usersRepository );
     }
 
     @Test
     void saveUserTest_ok( ) {
         // Prepare data
-        UserDto user = new UserDto( "Tommy", "1", "Carreno", "Gonzalez", "tommy@carreno.cl", "983714551", "1", "OLIWI" );
+        UserDto user = new UserDto( "Tommy",
+                "1", "Carreno",
+                "Gonzalez", "tommy@carreno.cl",
+                "983714551", "1",
+                new RoleDto( 1L, "ADMIN" ) );
 
         // Set environment
         when( usersRepository.save( any( User.class ) ) )
@@ -51,16 +57,24 @@ class UserServiceImplTest {
     @Test
     void getUserByRutTest_ok( ) {
         // Prepare data
+        Role role = Role.builder()
+                .id( 1L )
+                .name( "ADMIN" )
+                .build();
+
+        User user = User.builder()
+                .role( role )
+                .build();
 
         // Set environment
         when( usersRepository.findByRut( anyString( ) ) )
-                .thenReturn( Optional.of( new User( ) ) );
+                .thenReturn( Optional.of( user ) );
 
         // Execute
-        UserDto user = userService.getUserByRut( "1-1" );
+        UserDto userDto = userService.getUserByRut( "1-1" );
 
         // Assertions
-        assertNotNull( user );
+        assertNotNull( userDto );
 
         // Verify
         usersRepository.findByRut( anyString( ) );
@@ -85,16 +99,32 @@ class UserServiceImplTest {
     @Test
     void updateUserTest_ok( ) {
         // Prepare data
-        UserDto user = new UserDto( );
-        user.setRut( "1-1" );
+        Role role = Role.builder()
+                .id( 1L )
+                .name( "ADMIN" )
+                .build();
+
+        User user = User.builder()
+                .rut( "1-1" )
+                .role( role )
+                .build();
+
+        UserDto userDto = UserDto.builder( )
+                .rut( "1-1" )
+                .role( RoleDto.builder()
+                        .id( 1L )
+                        .name( "ADMIN" )
+                        .build() )
+                .build( );
+
         // Set environment
         when( usersRepository.findByRut( "1-1" ) )
-                .thenReturn( Optional.of( new User( ) ) );
+                .thenReturn( Optional.of( user ) );
         when( usersRepository.save( any( User.class ) ) )
                 .thenReturn( new User( ) );
 
         // Execute
-        userService.updateUser( user );
+        userService.updateUser( userDto );
 
         //Assertions
 
