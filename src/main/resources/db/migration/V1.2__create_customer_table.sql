@@ -1,4 +1,4 @@
-create table account
+create table customer
 (
     id serial not null,
     rut varchar not null,
@@ -7,7 +7,5 @@ create table account
     lastname1 varchar not null,
     lastname2 varchar not null,
     cellphone varchar not null,
-    password VARCHAR not null,
-    role_id numeric not null,
     PRIMARY KEY (id)
 );
