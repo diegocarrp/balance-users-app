@@ -18,7 +18,7 @@ public class UserDto extends CustomerDto {
     private String password;
 
     @NotBlank
-    private String role;
+    private RoleDto role;
 
     public UserDto( String names,
                     String rut,
@@ -27,7 +27,7 @@ public class UserDto extends CustomerDto {
                     String email,
                     String cellphone,
                     String password,
-                    String role ) {
+                    RoleDto role ) {
         super( rut, email, names, lastname1, lastname2, cellphone );
         this.password = password;
         this.role     = role;
@@ -39,7 +39,7 @@ public class UserDto extends CustomerDto {
                     String email,
                     String cellphone,
                     String password,
-                    String role ) {
+                    RoleDto role ) {
         super( rut, email, names, lastname1, cellphone );
         this.password = password;
         this.role     = role;
