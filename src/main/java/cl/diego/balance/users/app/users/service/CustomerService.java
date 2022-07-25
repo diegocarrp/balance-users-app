@@ -1,7 +1,7 @@
 package cl.diego.balance.users.app.users.service;
 
+import cl.diego.balance.commons.rest.domain.BadInputException;
 import cl.diego.balance.users.app.users.dto.CustomerDto;
-import cl.diego.balance.users.app.users.exception.BadInputException;
 import cl.diego.balance.users.app.users.exception.CustomerNotFoundException;
 
 public interface CustomerService {
@@ -13,4 +13,6 @@ public interface CustomerService {
     void updateCustomer( CustomerDto person ) throws BadInputException;
 
     void deleteCustomer( Long id );
+
+    CustomerDto getCustomerById( Long id ) throws CustomerNotFoundException;
 }

@@ -23,7 +23,7 @@ public class UserController {
         return ResponseEntity.ok( ).build( );
     }
 
-    @GetMapping( "/rut/{rut}" )
+    @GetMapping( "/by-rut/{rut}" )
     public ResponseEntity<UserDto> getUser( @PathVariable String rut ) {
         log.info( "UserController.getUser - rut: <{}>", rut );
         UserDto userFound = userService.getUserByRut( rut );

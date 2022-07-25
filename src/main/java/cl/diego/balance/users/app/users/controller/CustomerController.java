@@ -24,10 +24,17 @@ public class CustomerController {
         return ResponseEntity.ok( ).build( );
     }
 
-    @GetMapping( "/rut/{rut}" )
-    public ResponseEntity<CustomerDto> getCustomer( @PathVariable String rut ) {
+    @GetMapping( "/by-rut/{rut}" )
+    public ResponseEntity<CustomerDto> getCustomerByRut( @PathVariable String rut ) {
         log.info( "CustomerController.getCustomer - rut: <{}>", rut );
         CustomerDto customerFound = customerService.getCustomerByRut( rut );
+        return new ResponseEntity<>( customerFound, HttpStatus.OK );
+    }
+
+    @GetMapping( "/by-id/{id}" )
+    public ResponseEntity<CustomerDto> getCustomerById( @PathVariable Long id ) {
+        log.info( "CustomerController.getCustomer - id: <{}>", id );
+        CustomerDto customerFound = customerService.getCustomerById( id );
         return new ResponseEntity<>( customerFound, HttpStatus.OK );
     }
 
@@ -40,7 +47,7 @@ public class CustomerController {
 
     @DeleteMapping( "/id/{id}" )
     public ResponseEntity<UserDto> deleteCustomer( @PathVariable Long id ) {
-        log.info( "PersonController.deletePerson - id: <{}>", id );
+        log.info( "PersonController.deleteCustomer - id: <{}>", id );
         customerService.deleteCustomer( id );
         return ResponseEntity.ok( ).build( );
     }

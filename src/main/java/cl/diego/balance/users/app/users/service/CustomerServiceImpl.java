@@ -1,8 +1,8 @@
 package cl.diego.balance.users.app.users.service;
 
+import cl.diego.balance.commons.rest.domain.BadInputException;
 import cl.diego.balance.commons.rest.exception.ApiValidationException;
 import cl.diego.balance.users.app.users.dto.CustomerDto;
-import cl.diego.balance.users.app.users.exception.BadInputException;
 import cl.diego.balance.users.app.users.exception.CustomerNotFoundException;
 import cl.diego.balance.users.app.users.repository.CustomerRepository;
 import cl.diego.balance.users.app.users.repository.domain.Customer;
@@ -50,13 +50,22 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void updateCustomer( CustomerDto customer ) throws BadInputException {
         CustomerDto customerDb = getCustomerByRut( customer.getRut( ) );
-        customerDb.updateCustomer(customer);
+        customerDb.updateCustomer( customer );
         customerRepository.save( new Customer( customerDb ) );
     }
 
     @Override
     public void deleteCustomer( Long id ) {
+        log.info( "" );
         customerRepository.deleteById( id );
+    }
+
+    @Override
+    public CustomerDto getCustomerById( Long id ) throws CustomerNotFoundException {
+        Customer customerDb = customerRepository.findById( id )
+                .orElseThrow( ( ) -> new CustomerNotFoundException( String.valueOf( id ) ) );
+        log.info( "customerFound: <{}>", customerDb );
+        return customerDb.toCustomer( );
     }
 
     private void validateCustomer( CustomerDto customer ) {
@@ -66,6 +75,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .collect( Collectors.toList( ) );
 
         if( !descriptions.isEmpty( ) ) {
+            log.error( "Validation erros creating user: {}", descriptions );
             throw new ApiValidationException( "Customer wasn't created because of: ", descriptions );
         }
     }

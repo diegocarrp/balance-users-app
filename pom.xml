@@ -27,9 +27,15 @@
         <postgresql.version>42.3.6</postgresql.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <flyway.version>8.5.12</flyway.version>
-        <jakarta.validation-api.version>3.0.0</jakarta.validation-api.version>
+        <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
     </properties>
     <dependencies>
+        <!-- Balance dependencies -->
+        <dependency>
+            <groupId>cl.diego</groupId>
+            <artifactId>balance-commons</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!-- Spring dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
