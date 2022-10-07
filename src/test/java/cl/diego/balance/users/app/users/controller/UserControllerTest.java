@@ -1,5 +1,6 @@
 package cl.diego.balance.users.app.users.controller;
 
+import cl.diego.balance.commons.rest.domain.BadInputException;
 import cl.diego.balance.commons.rest.exception.ApiException;
 import cl.diego.balance.users.app.users.dto.RoleDto;
 import cl.diego.balance.users.app.users.dto.UserDto;
@@ -32,15 +33,9 @@ class UserControllerTest {
     void createUserTest_ok( ) {
 
         // Prepare Data
-        RoleDto role = RoleDto.builder()
-                .id( 1L )
-                .name( "ADMIN" )
-                .build();
+        RoleDto role = getAdminRole( );
 
-        UserDto user = UserDto.builder( )
-                .password( "Tommy" )
-                .role( role )
-                .build( );
+        UserDto user = getUser( role );
 
         // Set Environment
         doNothing( ).when( userService ).saveUser( user );
@@ -60,15 +55,9 @@ class UserControllerTest {
     void createUserTest_error( ) {
 
         // Prepare Data
-        RoleDto role = RoleDto.builder()
-                .id( 1L )
-                .name( "ADMIN" )
-                .build();
+        RoleDto role = getAdminRole( );
 
-        UserDto user = UserDto.builder( )
-                .password( "Tommy" )
-                .role( role )
-                .build( );
+        UserDto user = getUser( role );
 
         // Set Environment
         doThrow( new BadInputException( ) ).when( userService ).saveUser( user );
@@ -126,15 +115,9 @@ class UserControllerTest {
     void updateUserTest_ok( ) {
 
         // Prepare Data
-        RoleDto role = RoleDto.builder()
-                .id( 1L )
-                .name( "ADMIN" )
-                .build();
+        RoleDto role = getAdminRole( );
 
-        UserDto user = UserDto.builder( )
-                .password( "Tommy" )
-                .role( role )
-                .build( );
+        UserDto user = getUser( role );
 
         // Set Environment
         doNothing( ).when( userService ).updateUser( user );
@@ -154,15 +137,9 @@ class UserControllerTest {
     void updateUserTest_error( ) {
 
         // Prepare Data
-        RoleDto role = RoleDto.builder()
-                .id( 1L )
-                .name( "ADMIN" )
-                .build();
+        RoleDto role = getAdminRole( );
 
-        UserDto user = UserDto.builder( )
-                .password( "Tommy" )
-                .role( role )
-                .build( );
+        UserDto user = getUser( role );
 
         // Set Environment
         doThrow( new BadInputException( ) ).when( userService ).updateUser( user );
@@ -211,5 +188,19 @@ class UserControllerTest {
         // Verify
         verify( userService, times( 1 ) )
                 .deleteUser( anyLong( ) );
+    }
+
+    private static UserDto getUser(RoleDto role) {
+        return UserDto.builder( )
+                .password( "Tommy" )
+                .role( role )
+                .build( );
+    }
+
+    private static RoleDto getAdminRole( ) {
+        return RoleDto.builder( )
+                .id( 1L )
+                .name( "ADMIN" )
+                .build( );
     }
 }
