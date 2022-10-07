@@ -1,4 +1,4 @@
-#==== connect to postgreSQL ======#
+#====== connect to postgreSQL ======#
 spring:
   datasource:
     url: ${DATASOURCE_URL}
