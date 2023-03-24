@@ -5,6 +5,7 @@ import cl.diego.balance.users.app.users.dto.UserDto;
 import cl.diego.balance.users.app.users.service.CustomerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,8 @@ public class CustomerController {
 
     @PostMapping( "/create" )
     public ResponseEntity<Boolean> createCustomer( @RequestBody CustomerDto customer ) {
-        log.info( "CustomerController.createCustomer - body: <{}>", customer );
+        String trackingId = MDC.get("trackingId");
+        log.info( "CustomerController.createCustomer - body: <{}> - tracking <{}>", customer, trackingId );
         customerService.saveCustomer( customer );
         return ResponseEntity.ok( ).build( );
     }

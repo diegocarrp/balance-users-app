@@ -8,12 +8,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
+@Slf4j
 public class JSONLoggingLayout extends LayoutBase<ILoggingEvent> {
 
     private final ObjectMapper mapper = new ObjectMapper();
@@ -43,12 +47,15 @@ public class JSONLoggingLayout extends LayoutBase<ILoggingEvent> {
                 ZonedDateTime.ofInstant(
                         Instant.ofEpochMilli(event.getTimeStamp()),
                         ZoneId.systemDefault()) );
+        Map<String, String> mdc = event.getMDCPropertyMap();
+        String trackingId = mdc.get("trackingId");
 
         JSONLoggingEvent loggingEvent = JSONLoggingEvent.builder()
                 .message( formattedMessage )
                 .thread( event.getThreadName() )
                 .severity( event.getLevel().toString() )
                 .timestamp( timestamp )
+                .trackingId( trackingId )
                 .build();
 
         try {
