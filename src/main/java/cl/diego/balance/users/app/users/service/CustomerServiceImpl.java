@@ -4,8 +4,8 @@ import cl.diego.balance.commons.rest.domain.BadInputException;
 import cl.diego.balance.commons.rest.exception.ApiValidationException;
 import cl.diego.balance.users.app.users.dto.CustomerDto;
 import cl.diego.balance.users.app.users.exception.CustomerNotFoundException;
-import cl.diego.balance.users.app.users.repository.CustomerRepository;
-import cl.diego.balance.users.app.users.repository.domain.Customer;
+import cl.diego.balance.users.app.users.repository.mongodb.CustomerMongoRepository;
+import cl.diego.balance.users.app.users.repository.mongodb.domain.Customer;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -21,10 +21,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CustomerServiceImpl implements CustomerService {
 
-    private final CustomerRepository customerRepository;
+    private final CustomerMongoRepository customerRepository;
     private final Validator          validator;
 
-    public CustomerServiceImpl( CustomerRepository customerRepository ) {
+    public CustomerServiceImpl( CustomerMongoRepository customerRepository ) {
         this.customerRepository = customerRepository;
         this.validator          = Validation.byDefaultProvider( )
                 .configure( )
@@ -41,8 +41,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDto getCustomerByRut( String rut ) {
-        Customer customerDb = customerRepository.findByRut( rut )
-                .orElseThrow( ( ) -> new CustomerNotFoundException( rut ) );
+        Customer customerDb = customerRepository.findByRut( rut );
         log.info( "customerFound: <{}>", customerDb );
         return customerDb.toCustomer( );
     }
@@ -57,12 +56,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteCustomer( Long id ) {
         log.info( "" );
-        customerRepository.deleteById( id );
+        customerRepository.deleteById( id.toString() );
     }
 
     @Override
     public CustomerDto getCustomerById( Long id ) throws CustomerNotFoundException {
-        Customer customerDb = customerRepository.findById( id )
+        Customer customerDb = customerRepository.findById( id.toString() )
                 .orElseThrow( ( ) -> new CustomerNotFoundException( String.valueOf( id ) ) );
         log.info( "customerFound: <{}>", customerDb );
         return customerDb.toCustomer( );

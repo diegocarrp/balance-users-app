@@ -3,9 +3,8 @@ package cl.diego.balance.users.app.users.service;
 import cl.diego.balance.commons.rest.domain.BadInputException;
 import cl.diego.balance.commons.rest.exception.ApiValidationException;
 import cl.diego.balance.users.app.users.dto.UserDto;
-import cl.diego.balance.users.app.users.exception.UserNotFoundException;
-import cl.diego.balance.users.app.users.repository.domain.User;
-import cl.diego.balance.users.app.users.repository.UserRepository;
+import cl.diego.balance.users.app.users.repository.mongodb.UserMongoRepository;
+import cl.diego.balance.users.app.users.repository.mongodb.domain.User;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -21,10 +20,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository usersRepository;
+    private final UserMongoRepository usersRepository;
     private final Validator      validator;
 
-    public UserServiceImpl( UserRepository usersRepository ) {
+    public UserServiceImpl( UserMongoRepository usersRepository ) {
         this.usersRepository = usersRepository;
         this.validator       = Validation.byDefaultProvider( )
                 .configure( )
@@ -41,8 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByRut( String rut ) {
-        User userDb = usersRepository.findByRut( rut )
-                .orElseThrow( UserNotFoundException::new );
+        User userDb = usersRepository.findByRut( rut );
         log.info( "userFound: <{}>", userDb );
         return userDb.toUser( );
     }
@@ -56,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser( Long id ) {
-        usersRepository.deleteById( id );
+        usersRepository.deleteById( id.toString() );
     }
 
     private void validateUser( UserDto user ) {

@@ -218,7 +218,7 @@ class CustomerControllerTest {
 
     private static CustomerDto getCustomer( ) {
         return CustomerDto.builder( )
-                .id( 1L )
+                .id( "1" )
                 .rut( "1-1" )
                 .names( "Tommy" )
                 .lastname1( "Carreno" )

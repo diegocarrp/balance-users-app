@@ -199,7 +199,7 @@ class UserControllerTest {
 
     private static RoleDto getAdminRole( ) {
         return RoleDto.builder( )
-                .id( 1L )
+                .id( "1" )
                 .name( "ADMIN" )
                 .build( );
     }
