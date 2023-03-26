@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class CustomerDto {
 
-    private Long   id;
+    private String id;
     @NotBlank
     private String rut;
     @NotBlank

@@ -3,32 +3,34 @@ package cl.diego.balance.users.app.users.service;
 import cl.diego.balance.users.app.users.dto.RoleDto;
 import cl.diego.balance.users.app.users.dto.UserDto;
 import cl.diego.balance.users.app.users.exception.UserNotFoundException;
-import cl.diego.balance.users.app.users.repository.domain.Role;
-import cl.diego.balance.users.app.users.repository.domain.User;
-import cl.diego.balance.users.app.users.repository.UserRepository;
+import cl.diego.balance.users.app.users.repository.mongodb.UserMongoRepository;
+import cl.diego.balance.users.app.users.repository.mongodb.domain.Role;
+import cl.diego.balance.users.app.users.repository.mongodb.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class UserServiceImplTest {
 
     @Mock
-    private UserRepository usersRepository;
+    private UserMongoRepository usersRepository;
 
     @Autowired
     private UserService userService;
 
     @BeforeEach
     void setUp( ) {
-        usersRepository = mock( UserRepository.class );
+        usersRepository = mock( UserMongoRepository.class );
         userService     = new UserServiceImpl( usersRepository );
     }
 
@@ -39,7 +41,7 @@ class UserServiceImplTest {
                 "1", "Carreno",
                 "Gonzalez", "tommy@carreno.cl",
                 "983714551", "1",
-                new RoleDto( 1L, "ADMIN" ) );
+                new RoleDto( "1", "ADMIN" ) );
 
         // Set environment
         when( usersRepository.save( any( User.class ) ) )
@@ -58,7 +60,7 @@ class UserServiceImplTest {
     void getUserByRutTest_ok( ) {
         // Prepare data
         Role role = Role.builder()
-                .id( 1L )
+                .id( "1" )
                 .name( "ADMIN" )
                 .build();
 
@@ -68,7 +70,7 @@ class UserServiceImplTest {
 
         // Set environment
         when( usersRepository.findByRut( anyString( ) ) )
-                .thenReturn( Optional.of( user ) );
+                .thenReturn( user );
 
         // Execute
         UserDto userDto = userService.getUserByRut( "1-1" );
@@ -86,7 +88,7 @@ class UserServiceImplTest {
 
         // Set environment
         when( usersRepository.findByRut( anyString( ) ) )
-                .thenReturn( Optional.empty( ) );
+                .thenReturn( null );
 
         // Execute
         // Assertions
@@ -100,7 +102,7 @@ class UserServiceImplTest {
     void updateUserTest_ok( ) {
         // Prepare data
         Role role = Role.builder()
-                .id( 1L )
+                .id( "1" )
                 .name( "ADMIN" )
                 .build();
 
@@ -112,14 +114,14 @@ class UserServiceImplTest {
         UserDto userDto = UserDto.builder( )
                 .rut( "1-1" )
                 .role( RoleDto.builder()
-                        .id( 1L )
+                        .id( "1" )
                         .name( "ADMIN" )
                         .build() )
                 .build( );
 
         // Set environment
         when( usersRepository.findByRut( "1-1" ) )
-                .thenReturn( Optional.of( user ) );
+                .thenReturn( user );
         when( usersRepository.save( any( User.class ) ) )
                 .thenReturn( new User( ) );
 
@@ -129,7 +131,7 @@ class UserServiceImplTest {
         //Assertions
 
         // Verify
-        verify( usersRepository ).save( any( User.class ) );
+        verify( usersRepository ).save( any( User   .class ) );
     }
 
     @Test
@@ -137,7 +139,7 @@ class UserServiceImplTest {
         // Prepare data
 
         // Set environment
-        doNothing( ).when( usersRepository ).deleteById( anyLong( ) );
+        doNothing( ).when( usersRepository ).deleteById( anyString( ) );
 
         // Execute
         userService.deleteUser( 1L );
@@ -145,6 +147,6 @@ class UserServiceImplTest {
         //Assertions
 
         // Verify
-        verify( usersRepository ).deleteById( anyLong( ) );
+        verify( usersRepository ).deleteById( anyString( ) );
     }
 }

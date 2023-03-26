@@ -1,23 +1,20 @@
-package cl.diego.balance.users.app.users.repository.domain;
+package cl.diego.balance.users.app.users.repository.mongodb.domain;
 
 import cl.diego.balance.users.app.users.dto.CustomerDto;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-
-@Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@Entity
-@Table( schema = "public", name = "customer" )
-@ToString
+@Document(collection = "customers")
 public class Customer {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private Long   id;
+    private String id;
     private String rut;
     private String email;
     private String names;

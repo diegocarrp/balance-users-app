@@ -1,6 +1,21 @@
 version: '3.1'
 
 services:
+
+  app:
+    image: 'balance-users-ms:latest'
+    build:
+      context: .
+    container_name: app
+    depends_on:
+      - db
+    environment:
+      - DATASOURCE_URL=jdbc:postgresql://db:5432/balance_users_db
+      - DATASOURCE_USER=postgres
+      - DATASOURCE_PASSWORD=diego123
+    ports:
+      - 8080:8080
+
   db:
     image: postgres
     restart: always

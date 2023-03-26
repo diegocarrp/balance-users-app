@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+cl.diego.balance.users.app.config.db.MongoDBConfig
