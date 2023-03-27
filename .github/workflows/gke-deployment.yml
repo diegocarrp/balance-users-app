@@ -46,7 +46,7 @@ jobs:
         tags: gcr.io/$PROJECT_ID/<IMAGE_NAME>:${{ env.TAG_NAME }}
 
     - name: Deploy to GKE
-      uses: GoogleCloudPlatform/github-actions/setup-gcloud@v2
+      uses: GoogleCloudPlatform/github-actions/setup-gcloud@v1
       with:
         version: <VERSION>
         project_id: $PROJECT_ID
