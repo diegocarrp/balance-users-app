@@ -43,7 +43,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: gcr.io/${{ env.PROJECT_ID }}/balance-users-app:v1
+        tags: gcr.io/careerpath-366703/balance-users-app:v1
 
     - name: Deploy to GKE
       uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
