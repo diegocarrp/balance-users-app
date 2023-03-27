@@ -3,6 +3,7 @@ package cl.diego.balance.users.app.users.service;
 import cl.diego.balance.commons.rest.domain.BadInputException;
 import cl.diego.balance.commons.rest.exception.ApiValidationException;
 import cl.diego.balance.users.app.users.dto.UserDto;
+import cl.diego.balance.users.app.users.exception.UserNotFoundException;
 import cl.diego.balance.users.app.users.repository.mongodb.UserMongoRepository;
 import cl.diego.balance.users.app.users.repository.mongodb.domain.User;
 import jakarta.validation.ConstraintViolation;
@@ -41,6 +42,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserByRut( String rut ) {
         User userDb = usersRepository.findByRut( rut );
+        if (userDb == null) {
+            throw new UserNotFoundException();
+        }
         log.info( "userFound: <{}>", userDb );
         return userDb.toUser( );
     }

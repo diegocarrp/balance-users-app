@@ -42,6 +42,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDto getCustomerByRut( String rut ) {
         Customer customerDb = customerRepository.findByRut( rut );
+        if (customerDb == null) {
+            throw new CustomerNotFoundException( rut );
+        }
         log.info( "customerFound: <{}>", customerDb );
         return customerDb.toCustomer( );
     }

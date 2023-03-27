@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: balance-users-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: balance-users-app
+  template:
+    metadata:
+      labels:
+        app: balance-users-app
+    spec:
+      containers:
+        - name: balance-users-app
+          image: gcr.io/careerpath-366703/balance-users-app:v1
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: balance-users-app
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: balance-users-app
