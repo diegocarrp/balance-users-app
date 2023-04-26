@@ -1,5 +1,7 @@
-
-
+management:
+  endpoint:
+    health:
+      show-details: always
 
 config:
   mongodb:

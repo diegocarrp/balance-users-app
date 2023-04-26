@@ -1,0 +1,12 @@
+steps:
+  - name: 'gcr.io/cloud-builders/mvn'
+    args: ['clean', 'package']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/careerpath-366703/my-microservice', '.']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/careerpath-366703/balance-users-app']
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['apply', '-f', 'kubernetes/deployment.yaml']
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=my-cluster'
