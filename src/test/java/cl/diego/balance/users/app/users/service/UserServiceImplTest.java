@@ -6,10 +6,10 @@ import cl.diego.balance.users.app.users.exception.UserNotFoundException;
 import cl.diego.balance.users.app.users.repository.mongodb.UserMongoRepository;
 import cl.diego.balance.users.app.users.repository.mongodb.domain.Role;
 import cl.diego.balance.users.app.users.repository.mongodb.domain.User;
+import jakarta.validation.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -25,13 +25,14 @@ class UserServiceImplTest {
     @Mock
     private UserMongoRepository usersRepository;
 
-    @Autowired
     private UserService userService;
 
     @BeforeEach
     void setUp( ) {
+        Validator validator = mock( Validator.class );
+
         usersRepository = mock( UserMongoRepository.class );
-        userService     = new UserServiceImpl( usersRepository );
+        userService     = new UserServiceImpl( usersRepository, validator );
     }
 
     @Test
@@ -59,14 +60,14 @@ class UserServiceImplTest {
     @Test
     void getUserByRutTest_ok( ) {
         // Prepare data
-        Role role = Role.builder()
+        Role role = Role.builder( )
                 .id( "1" )
                 .name( "ADMIN" )
-                .build();
+                .build( );
 
-        User user = User.builder()
+        User user = User.builder( )
                 .role( role )
-                .build();
+                .build( );
 
         // Set environment
         when( usersRepository.findByRut( anyString( ) ) )
@@ -101,22 +102,22 @@ class UserServiceImplTest {
     @Test
     void updateUserTest_ok( ) {
         // Prepare data
-        Role role = Role.builder()
+        Role role = Role.builder( )
                 .id( "1" )
                 .name( "ADMIN" )
-                .build();
+                .build( );
 
-        User user = User.builder()
+        User user = User.builder( )
                 .rut( "1-1" )
                 .role( role )
-                .build();
+                .build( );
 
         UserDto userDto = UserDto.builder( )
                 .rut( "1-1" )
-                .role( RoleDto.builder()
+                .role( RoleDto.builder( )
                         .id( "1" )
                         .name( "ADMIN" )
-                        .build() )
+                        .build( ) )
                 .build( );
 
         // Set environment
@@ -131,7 +132,7 @@ class UserServiceImplTest {
         //Assertions
 
         // Verify
-        verify( usersRepository ).save( any( User   .class ) );
+        verify( usersRepository ).save( any( User.class ) );
     }
 
     @Test

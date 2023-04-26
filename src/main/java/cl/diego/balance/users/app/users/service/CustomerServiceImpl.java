@@ -7,10 +7,8 @@ import cl.diego.balance.users.app.users.exception.CustomerNotFoundException;
 import cl.diego.balance.users.app.users.repository.mongodb.CustomerMongoRepository;
 import cl.diego.balance.users.app.users.repository.mongodb.domain.Customer;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,13 +22,10 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerMongoRepository customerRepository;
     private final Validator          validator;
 
-    public CustomerServiceImpl( CustomerMongoRepository customerRepository ) {
+    public CustomerServiceImpl( CustomerMongoRepository customerRepository,
+                                Validator validator ) {
         this.customerRepository = customerRepository;
-        this.validator          = Validation.byDefaultProvider( )
-                .configure( )
-                .messageInterpolator( new ParameterMessageInterpolator( ) )
-                .buildValidatorFactory( )
-                .getValidator( );
+        this.validator          = validator;
     }
 
     @Override

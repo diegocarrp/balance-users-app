@@ -4,6 +4,7 @@ import cl.diego.balance.users.app.users.dto.CustomerDto;
 import cl.diego.balance.users.app.users.exception.CustomerNotFoundException;
 import cl.diego.balance.users.app.users.repository.mongodb.CustomerMongoRepository;
 import cl.diego.balance.users.app.users.repository.mongodb.domain.Customer;
+import jakarta.validation.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -28,13 +29,14 @@ class CustomerServiceImplTest {
     @Mock
     private CustomerMongoRepository customerRepository;
 
-    @Autowired
     private CustomerService customerService;
 
     @BeforeEach
     void setUp( ) {
+        Validator validator = mock( Validator.class );
+
         customerRepository = mock( CustomerMongoRepository.class );
-        customerService    = new CustomerServiceImpl( customerRepository );
+        customerService    = new CustomerServiceImpl( customerRepository, validator );
     }
 
     @Test
@@ -94,9 +96,9 @@ class CustomerServiceImplTest {
     @Test
     void updateCustomerTest_ok( ) {
         // Prepare data
-        Customer customer = getCustomer();
+        Customer customer = getCustomer( );
 
-        CustomerDto customerDto = getCustomerDto();
+        CustomerDto customerDto = getCustomerDto( );
 
         // Set environment
         when( customerRepository.findByRut( "1-1" ) )

@@ -7,10 +7,8 @@ import cl.diego.balance.users.app.users.exception.UserNotFoundException;
 import cl.diego.balance.users.app.users.repository.mongodb.UserMongoRepository;
 import cl.diego.balance.users.app.users.repository.mongodb.domain.User;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,13 +22,11 @@ public class UserServiceImpl implements UserService {
     private final UserMongoRepository usersRepository;
     private final Validator      validator;
 
-    public UserServiceImpl( UserMongoRepository usersRepository ) {
+    public UserServiceImpl( UserMongoRepository usersRepository,
+                            Validator validator ) {
         this.usersRepository = usersRepository;
-        this.validator       = Validation.byDefaultProvider( )
-                .configure( )
-                .messageInterpolator( new ParameterMessageInterpolator( ) )
-                .buildValidatorFactory( )
-                .getValidator( );
+
+        this.validator = validator;
     }
 
     @Override
