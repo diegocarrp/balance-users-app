@@ -1,12 +1,13 @@
 package cl.diego.balance.users.app.users.repository.mongodb.domain;
 
 import cl.diego.balance.users.app.users.dto.CustomerDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -44,5 +45,4 @@ public class Customer {
                 .cellphone( this.cellphone )
                 .build();
     }
-
 }
