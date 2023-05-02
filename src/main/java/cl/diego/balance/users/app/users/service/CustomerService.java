@@ -14,5 +14,5 @@ public interface CustomerService {
 
     void deleteCustomer( Long id );
 
-    CustomerDto getCustomerById( Long id ) throws CustomerNotFoundException;
+    CustomerDto getCustomerById( String id ) throws CustomerNotFoundException;
 }

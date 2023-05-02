@@ -38,7 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDto getCustomerByRut( String rut ) {
         Customer customerDb = customerRepository.findByRut( rut );
         if (customerDb == null) {
-            throw new CustomerNotFoundException( rut );
+            throw new CustomerNotFoundException( rut, "RUT" );
         }
         log.info( "customerFound: <{}>", customerDb );
         return customerDb.toCustomer( );
@@ -58,9 +58,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDto getCustomerById( Long id ) throws CustomerNotFoundException {
-        Customer customerDb = customerRepository.findById( id.toString() )
-                .orElseThrow( ( ) -> new CustomerNotFoundException( String.valueOf( id ) ) );
+    public CustomerDto getCustomerById( String id ) throws CustomerNotFoundException {
+        Customer customerDb = customerRepository.findById( id )
+                .orElseThrow( ( ) -> new CustomerNotFoundException( id, "ID" ) );
         log.info( "customerFound: <{}>", customerDb );
         return customerDb.toCustomer( );
     }

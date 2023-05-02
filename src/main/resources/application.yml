@@ -1,12 +1,3 @@
-management:
-  endpoint:
-    health:
-      show-details: always
-  endpoints:
-    web:
-      exposure:
-        include: *
-
 config:
   mongodb:
     uri: mongodb+srv://diegosauriio:Tommy123@diegosauriio.9lwluyu.mongodb.net/?retryWrites=true&w=majority

@@ -94,7 +94,7 @@ class CustomerControllerTest {
         // Prepare data
         // Set environment
         when( customerService.getCustomerByRut( anyString( ) ) )
-                .thenThrow( new CustomerNotFoundException( "1-1" ) );
+                .thenThrow( new CustomerNotFoundException( "1-1", "RUT" ) );
 
         // Execute
         // Assertions
@@ -112,18 +112,18 @@ class CustomerControllerTest {
         CustomerDto customer = getCustomer( );
 
         // Set environment
-        when( customerService.getCustomerById( anyLong() ) )
+        when( customerService.getCustomerById( anyString() ) )
                 .thenReturn( customer );
 
         // Execute
-        ResponseEntity response = customerController.getCustomerById( 1L );
+        ResponseEntity response = customerController.getCustomerById( "1"  );
 
         // Assertions
         assertEquals( HttpStatus.OK, response.getStatusCode( ) );
 
         // Verify
         verify( customerService, times( 1 ) )
-                .getCustomerById( anyLong() );
+                .getCustomerById( anyString() );
     }
 
     @Test
@@ -131,16 +131,16 @@ class CustomerControllerTest {
 
         // Prepare data
         // Set environment
-        when( customerService.getCustomerById( anyLong() ) )
-                .thenThrow( new CustomerNotFoundException( "1-1" ) );
+        when( customerService.getCustomerById( anyString() ) )
+                .thenThrow( new CustomerNotFoundException( "1-1", "RUT" ) );
 
         // Execute
         // Assertions
-        assertThrows( CustomerNotFoundException.class, () -> customerController.getCustomerById( 1L ) );
+        assertThrows( CustomerNotFoundException.class, () -> customerController.getCustomerById( "1" ) );
 
         // Verify
         verify( customerService, times( 1 ) )
-                .getCustomerById( anyLong() );
+                .getCustomerById( anyString() );
     }
 
     @Test
@@ -205,7 +205,7 @@ class CustomerControllerTest {
         // Prepare data
 
         // Set environment
-        doThrow( new CustomerNotFoundException( "1-1" ) ).when( customerService ).deleteCustomer( anyLong( ) );
+        doThrow( new CustomerNotFoundException( "1-1", "RUT" ) ).when( customerService ).deleteCustomer( anyLong( ) );
 
         // Execute
         // Assertions

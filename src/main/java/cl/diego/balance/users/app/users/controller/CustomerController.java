@@ -34,7 +34,7 @@ public class CustomerController {
     }
 
     @GetMapping( "/by-id/{id}" )
-    public ResponseEntity<CustomerDto> getCustomerById( @PathVariable Long id ) {
+    public ResponseEntity<CustomerDto> getCustomerById( @PathVariable String id ) {
         log.info( "CustomerController.getCustomer - id: <{}>", id );
         CustomerDto customerFound = customerService.getCustomerById( id );
         return new ResponseEntity<>( customerFound, HttpStatus.OK );
