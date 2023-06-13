@@ -8,6 +8,7 @@ public interface UserService {
     void saveUser( UserDto user ) throws BadInputException;
 
     UserDto getUserByRut( String rut ) throws UserNotFoundException;
+    UserDto getUserById( String id ) throws UserNotFoundException;
 
     void updateUser( UserDto user ) throws BadInputException;
 

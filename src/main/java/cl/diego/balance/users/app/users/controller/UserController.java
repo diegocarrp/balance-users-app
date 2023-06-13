@@ -30,6 +30,13 @@ public class UserController {
         return new ResponseEntity<>( userFound, HttpStatus.OK );
     }
 
+    @GetMapping( "/by-id/{id}" )
+    public ResponseEntity<UserDto> getUserById( @PathVariable String id ) {
+        log.info( "UserController.getUser - rut: <{}>", id );
+        UserDto userFound = userService.getUserById( id );
+        return new ResponseEntity<>( userFound, HttpStatus.OK );
+    }
+
     @PutMapping( "/update" )
     public ResponseEntity<UserDto> updateUser( @RequestBody UserDto user ) {
         log.info( "UserController.updateUser - body: <{}>", user );

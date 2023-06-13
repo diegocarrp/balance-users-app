@@ -3,6 +3,7 @@ package cl.diego.balance.users.app.users.service;
 import cl.diego.balance.commons.rest.domain.BadInputException;
 import cl.diego.balance.commons.rest.exception.ApiValidationException;
 import cl.diego.balance.users.app.users.dto.UserDto;
+import cl.diego.balance.users.app.users.exception.UserAlreadyRegisteredException;
 import cl.diego.balance.users.app.users.exception.UserNotFoundException;
 import cl.diego.balance.users.app.users.repository.mongodb.UserMongoRepository;
 import cl.diego.balance.users.app.users.repository.mongodb.domain.User;
@@ -37,10 +38,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByRut( String rut ) {
-        User userDb = usersRepository.findByRut( rut );
-        if (userDb == null) {
-            throw new UserNotFoundException();
-        }
+        User userDb = usersRepository.findByRut( rut )
+                .orElseThrow( UserNotFoundException::new );
+        log.info( "userFound: <{}>", userDb );
+        return userDb.toUser( );
+    }
+
+    @Override
+    public UserDto getUserById( String id ) throws UserNotFoundException {
+        User userDb = usersRepository.findById( id )
+                .orElseThrow( UserNotFoundException::new );
         log.info( "userFound: <{}>", userDb );
         return userDb.toUser( );
     }
@@ -58,6 +65,10 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validateUser( UserDto user ) {
+        boolean isRegistered = usersRepository.findByRut( user.getRut( ) ).isPresent( );
+        if(isRegistered) {
+            throw new UserAlreadyRegisteredException();
+        }
         Set<ConstraintViolation<UserDto>> violations = validator.validate( user );
         List<String> descriptions = violations.stream( )
                 .map( v -> v.getPropertyPath( ) + " - " + v.getMessage( ) )

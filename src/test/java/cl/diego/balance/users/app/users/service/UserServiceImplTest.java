@@ -11,6 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -71,7 +73,7 @@ class UserServiceImplTest {
 
         // Set environment
         when( usersRepository.findByRut( anyString( ) ) )
-                .thenReturn( user );
+                .thenReturn( Optional.ofNullable( user ) );
 
         // Execute
         UserDto userDto = userService.getUserByRut( "1-1" );
@@ -89,7 +91,7 @@ class UserServiceImplTest {
 
         // Set environment
         when( usersRepository.findByRut( anyString( ) ) )
-                .thenReturn( null );
+                .thenReturn( Optional.empty() );
 
         // Execute
         // Assertions
@@ -122,7 +124,7 @@ class UserServiceImplTest {
 
         // Set environment
         when( usersRepository.findByRut( "1-1" ) )
-                .thenReturn( user );
+                .thenReturn( Optional.ofNullable( user ) );
         when( usersRepository.save( any( User.class ) ) )
                 .thenReturn( new User( ) );
 

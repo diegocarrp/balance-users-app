@@ -3,6 +3,7 @@ package cl.diego.balance.users.app.users.service;
 import cl.diego.balance.commons.rest.domain.BadInputException;
 import cl.diego.balance.commons.rest.exception.ApiValidationException;
 import cl.diego.balance.users.app.users.dto.CustomerDto;
+import cl.diego.balance.users.app.users.exception.CustomerAlreadyRegisteredException;
 import cl.diego.balance.users.app.users.exception.CustomerNotFoundException;
 import cl.diego.balance.users.app.users.repository.mongodb.CustomerMongoRepository;
 import cl.diego.balance.users.app.users.repository.mongodb.domain.Customer;
@@ -36,10 +37,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDto getCustomerByRut( String rut ) {
-        Customer customerDb = customerRepository.findByRut( rut );
-        if (customerDb == null) {
-            throw new CustomerNotFoundException( rut, "RUT" );
-        }
+        Customer customerDb = customerRepository.findByRut( rut )
+                .orElseThrow( () -> new CustomerNotFoundException( rut, "RUT" ) );
         log.info( "customerFound: <{}>", customerDb );
         return customerDb.toCustomer( );
     }
@@ -66,6 +65,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     private void validateCustomer( CustomerDto customer ) {
+        boolean isRegistered = customerRepository.findByRut( customer.getRut( ) ).isPresent( );
+        if(isRegistered) {
+            throw new CustomerAlreadyRegisteredException();
+        }
+
         Set<ConstraintViolation<CustomerDto>> violations = validator.validate( customer );
         List<String> descriptions = violations.stream( )
                 .map( v -> v.getPropertyPath( ) + " - " + v.getMessage( ) )

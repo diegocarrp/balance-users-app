@@ -16,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static cl.diego.balance.commons.testing.UtilForTesting.getMappedObjectFromFile;
 import static org.junit.jupiter.api.Assertions.*;
@@ -60,7 +61,9 @@ class CustomerServiceImplTest {
     @Test
     void saveCustomerTest_ok( ) {
         when( customerRepository.save( customerOne ) )
-                .thenReturn( new Customer( ) );
+                .thenReturn( customerOne );
+        when( customerRepository.findByRut( anyString() ) )
+                .thenReturn( Optional.empty( ) );
 
         assertDoesNotThrow( ( ) -> customerService.saveCustomer( customerOneDto ) );
 
@@ -70,7 +73,7 @@ class CustomerServiceImplTest {
     @Test
     void getCustomerByRutTest_ok( ) {
         when( customerRepository.findByRut( customerOneDto.getRut( ) ) )
-                .thenReturn( customerOne );
+                .thenReturn( Optional.of( customerOne ) );
 
         CustomerDto customerDto = customerService.getCustomerByRut( customerOneDto.getRut( ) );
 
@@ -85,7 +88,7 @@ class CustomerServiceImplTest {
     @Test
     void getCustomerByRutTest_error( ) {
         when( customerRepository.findByRut( anyString( ) ) )
-                .thenReturn( null );
+                .thenReturn( Optional.empty() );
 
         assertThrows( CustomerNotFoundException.class, ( ) -> customerService.getCustomerByRut( "1-1" ) );
     }
@@ -93,7 +96,7 @@ class CustomerServiceImplTest {
     @Test
     void updateCustomerTest_ok( ) {
         when( customerRepository.findByRut( customerOneDto.getRut( ) ) )
-                .thenReturn( customerOne );
+                .thenReturn( Optional.ofNullable( customerOne ) );
         when( customerRepository.save( customerOne ) )
                 .thenReturn( customerOne );
 
