@@ -7,9 +7,7 @@ import com.mongodb.ServerApiVersion;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,11 +24,8 @@ public class MongoDBConfig {
 
     @Bean
     public MongoDatabase mongoDatabase() {
-        log.info( "Creando el mongo - ConnectionUri: {}", connectionUri );
-        log.info( "Creando el mongo - DatabaseName: {}", databaseName );
         MongoClientSettings settings = getMongoClientSettings( );
         MongoClient mongoClient = MongoClients.create(settings);
-        log.info( "Creado el mongo" );
         return mongoClient.getDatabase(databaseName);
     }
 
@@ -42,7 +37,6 @@ public class MongoDBConfig {
         return new MongoTemplate(mongoClient, databaseName);
     }
 
-    @NotNull
     private MongoClientSettings getMongoClientSettings( ) {
         ConnectionString connectionString = new ConnectionString(connectionUri);
         MongoClientSettings settings = MongoClientSettings.builder()

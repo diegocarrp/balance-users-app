@@ -2,3 +2,9 @@ config:
   mongodb:
     uri: mongodb+srv://diegosauriio:Tommy123@diegosauriio.9lwluyu.mongodb.net/?retryWrites=true&w=majority
     database: Diegosauriio
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
