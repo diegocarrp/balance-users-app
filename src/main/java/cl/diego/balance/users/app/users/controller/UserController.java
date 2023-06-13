@@ -17,10 +17,10 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping( "/create" )
-    public ResponseEntity<Boolean> createUser( @RequestBody UserDto user ) {
+    public ResponseEntity<String> createUser( @RequestBody UserDto user ) {
         log.info( "UserController.createUser - body: <{}>", user );
-        userService.saveUser( user );
-        return ResponseEntity.ok( ).build( );
+        String userId = userService.saveUser( user );
+        return ResponseEntity.ok( userId );
     }
 
     @GetMapping( "/by-rut/{rut}" )

@@ -36,7 +36,8 @@ class CustomerControllerTest {
         CustomerDto customer = getCustomer( );
 
         // Set environment
-        doNothing( ).when( customerService ).saveCustomer( customer );
+        when( customerService.saveCustomer( customer ) )
+                .thenReturn( "1" );
 
         // Execute
         ResponseEntity response = customerController.createCustomer( customer );

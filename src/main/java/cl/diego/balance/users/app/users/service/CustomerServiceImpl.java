@@ -30,9 +30,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void saveCustomer( CustomerDto customer ) throws BadInputException {
+    public String saveCustomer( CustomerDto customer ) throws BadInputException {
         validateCustomer( customer );
-        customerRepository.save( new Customer( customer ) );
+        Customer savedCustomer = customerRepository.save( new Customer( customer ) );
+        return savedCustomer.getId();
     }
 
     @Override

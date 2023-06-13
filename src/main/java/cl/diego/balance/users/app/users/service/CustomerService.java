@@ -6,7 +6,7 @@ import cl.diego.balance.users.app.users.exception.CustomerNotFoundException;
 
 public interface CustomerService {
 
-    void saveCustomer( CustomerDto person ) throws BadInputException;
+    String saveCustomer( CustomerDto person ) throws BadInputException;
 
     CustomerDto getCustomerByRut( String rut ) throws CustomerNotFoundException;
 

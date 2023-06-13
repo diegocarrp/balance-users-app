@@ -19,11 +19,10 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping( "/create" )
-    public ResponseEntity<Boolean> createCustomer( @RequestBody CustomerDto customer ) {
-        String trackingId = MDC.get("trackingId");
-        log.info( "CustomerController.createCustomer - body: <{}> - tracking <{}>", customer, trackingId );
-        customerService.saveCustomer( customer );
-        return ResponseEntity.ok( ).build( );
+    public ResponseEntity<String> createCustomer( @RequestBody CustomerDto customer ) {
+        log.info( "CustomerController.createCustomer - body: <{}>", customer );
+        String customerId = customerService.saveCustomer( customer );
+        return ResponseEntity.ok( customerId );
     }
 
     @GetMapping( "/by-rut/{rut}" )

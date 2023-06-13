@@ -31,9 +31,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser( UserDto user ) {
+    public String saveUser( UserDto user ) {
         validateUser( user );
-        usersRepository.save( new User( user ) );
+        User savedUser = usersRepository.save( new User( user ) );
+        return savedUser.getId( );
     }
 
     @Override

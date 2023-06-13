@@ -38,13 +38,14 @@ class UserControllerTest {
         UserDto user = getUser( role );
 
         // Set Environment
-        doNothing( ).when( userService ).saveUser( user );
+        when( userService.saveUser( user ) )
+                .thenReturn( "1" );
 
         // Execute
-        ResponseEntity reponse = userController.createUser( user );
+        ResponseEntity response = userController.createUser( user );
 
         // Assertions
-        assertEquals( HttpStatus.OK, reponse.getStatusCode( ) );
+        assertEquals( HttpStatus.OK, response.getStatusCode( ) );
 
         // Verify
         verify( userService, times( 1 ) )

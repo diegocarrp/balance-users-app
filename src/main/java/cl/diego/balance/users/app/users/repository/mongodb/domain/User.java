@@ -3,6 +3,7 @@ package cl.diego.balance.users.app.users.repository.mongodb.domain;
 import cl.diego.balance.users.app.users.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Data
 @Document(collection = "users")
 public class User {
 
