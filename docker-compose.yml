@@ -9,4 +9,4 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: diego123
-      POSTGRES_DB: balance_users_db
+      POSTGRES_DB: users_db

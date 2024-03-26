@@ -1,9 +1,9 @@
 package cl.diego.balance.users.app.users.repository.domain;
 
 import cl.diego.balance.users.app.users.dto.CustomerDto;
+import jakarta.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
 
 @Getter
 @Setter
