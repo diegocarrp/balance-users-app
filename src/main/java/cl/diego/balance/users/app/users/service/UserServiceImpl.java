@@ -1,16 +1,15 @@
 package cl.diego.balance.users.app.users.service;
 
+import cl.diego.balance.commons.rest.domain.BadInputException;
 import cl.diego.balance.commons.rest.exception.ApiValidationException;
 import cl.diego.balance.users.app.users.dto.UserDto;
-import cl.diego.balance.users.app.users.exception.BadInputException;
+import cl.diego.balance.users.app.users.exception.UserAlreadyRegisteredException;
 import cl.diego.balance.users.app.users.exception.UserNotFoundException;
-import cl.diego.balance.users.app.users.repository.domain.User;
-import cl.diego.balance.users.app.users.repository.UserRepository;
+import cl.diego.balance.users.app.users.repository.mongodb.UserMongoRepository;
+import cl.diego.balance.users.app.users.repository.mongodb.domain.User;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,27 +20,34 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository usersRepository;
+    private final UserMongoRepository usersRepository;
     private final Validator      validator;
 
-    public UserServiceImpl( UserRepository usersRepository ) {
+    public UserServiceImpl( UserMongoRepository usersRepository,
+                            Validator validator ) {
         this.usersRepository = usersRepository;
-        this.validator       = Validation.byDefaultProvider( )
-                .configure( )
-                .messageInterpolator( new ParameterMessageInterpolator( ) )
-                .buildValidatorFactory( )
-                .getValidator( );
+
+        this.validator = validator;
     }
 
     @Override
-    public void saveUser( UserDto user ) {
+    public String saveUser( UserDto user ) {
         validateUser( user );
-        usersRepository.save( new User( user ) );
+        User savedUser = usersRepository.save( new User( user ) );
+        return savedUser.getId( );
     }
 
     @Override
     public UserDto getUserByRut( String rut ) {
         User userDb = usersRepository.findByRut( rut )
+                .orElseThrow( UserNotFoundException::new );
+        log.info( "userFound: <{}>", userDb );
+        return userDb.toUser( );
+    }
+
+    @Override
+    public UserDto getUserById( String id ) throws UserNotFoundException {
+        User userDb = usersRepository.findById( id )
                 .orElseThrow( UserNotFoundException::new );
         log.info( "userFound: <{}>", userDb );
         return userDb.toUser( );
@@ -56,10 +62,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser( Long id ) {
-        usersRepository.deleteById( id );
+        usersRepository.deleteById( id.toString() );
     }
 
     private void validateUser( UserDto user ) {
+        boolean isRegistered = usersRepository.findByRut( user.getRut( ) ).isPresent( );
+        if(isRegistered) {
+            throw new UserAlreadyRegisteredException();
+        }
         Set<ConstraintViolation<UserDto>> violations = validator.validate( user );
         List<String> descriptions = violations.stream( )
                 .map( v -> v.getPropertyPath( ) + " - " + v.getMessage( ) )

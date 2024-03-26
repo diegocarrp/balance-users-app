@@ -5,6 +5,7 @@ import cl.diego.balance.users.app.users.dto.UserDto;
 import cl.diego.balance.users.app.users.service.CustomerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,16 +19,23 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping( "/create" )
-    public ResponseEntity<Boolean> createCustomer( @RequestBody CustomerDto customer ) {
+    public ResponseEntity<String> createCustomer( @RequestBody CustomerDto customer ) {
         log.info( "CustomerController.createCustomer - body: <{}>", customer );
-        customerService.saveCustomer( customer );
-        return ResponseEntity.ok( ).build( );
+        String customerId = customerService.saveCustomer( customer );
+        return ResponseEntity.ok( customerId );
     }
 
-    @GetMapping( "/rut/{rut}" )
-    public ResponseEntity<CustomerDto> getCustomer( @PathVariable String rut ) {
+    @GetMapping( "/by-rut/{rut}" )
+    public ResponseEntity<CustomerDto> getCustomerByRut( @PathVariable String rut ) {
         log.info( "CustomerController.getCustomer - rut: <{}>", rut );
         CustomerDto customerFound = customerService.getCustomerByRut( rut );
+        return new ResponseEntity<>( customerFound, HttpStatus.OK );
+    }
+
+    @GetMapping( "/by-id/{id}" )
+    public ResponseEntity<CustomerDto> getCustomerById( @PathVariable String id ) {
+        log.info( "CustomerController.getCustomer - id: <{}>", id );
+        CustomerDto customerFound = customerService.getCustomerById( id );
         return new ResponseEntity<>( customerFound, HttpStatus.OK );
     }
 
@@ -40,7 +48,7 @@ public class CustomerController {
 
     @DeleteMapping( "/id/{id}" )
     public ResponseEntity<UserDto> deleteCustomer( @PathVariable Long id ) {
-        log.info( "PersonController.deletePerson - id: <{}>", id );
+        log.info( "PersonController.deleteCustomer - id: <{}>", id );
         customerService.deleteCustomer( id );
         return ResponseEntity.ok( ).build( );
     }

@@ -1,22 +1,22 @@
-package cl.diego.balance.users.app.users.repository.domain;
+package cl.diego.balance.users.app.users.repository.mongodb.domain;
 
 import cl.diego.balance.users.app.users.dto.UserDto;
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@Entity
-@Table( schema = "public", name = "account" )
-@ToString
+@Data
+@Document(collection = "users")
 public class User {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private Long   id;
+    private String id;
     private String rut;
     private String email;
     private String names;
@@ -24,8 +24,6 @@ public class User {
     private String lastname2;
     private String cellphone;
     private String password;
-    @OneToOne
-    @JoinColumn( name = "role_id" )
     private Role   role;
 
     public User( UserDto user ) {

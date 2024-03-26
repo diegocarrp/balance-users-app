@@ -17,16 +17,23 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping( "/create" )
-    public ResponseEntity<Boolean> createUser( @RequestBody UserDto user ) {
+    public ResponseEntity<String> createUser( @RequestBody UserDto user ) {
         log.info( "UserController.createUser - body: <{}>", user );
-        userService.saveUser( user );
-        return ResponseEntity.ok( ).build( );
+        String userId = userService.saveUser( user );
+        return ResponseEntity.ok( userId );
     }
 
-    @GetMapping( "/rut/{rut}" )
+    @GetMapping( "/by-rut/{rut}" )
     public ResponseEntity<UserDto> getUser( @PathVariable String rut ) {
         log.info( "UserController.getUser - rut: <{}>", rut );
         UserDto userFound = userService.getUserByRut( rut );
+        return new ResponseEntity<>( userFound, HttpStatus.OK );
+    }
+
+    @GetMapping( "/by-id/{id}" )
+    public ResponseEntity<UserDto> getUserById( @PathVariable String id ) {
+        log.info( "UserController.getUser - rut: <{}>", id );
+        UserDto userFound = userService.getUserById( id );
         return new ResponseEntity<>( userFound, HttpStatus.OK );
     }
 

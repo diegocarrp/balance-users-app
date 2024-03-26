@@ -1,9 +1,9 @@
 package cl.diego.balance.users.app.users.controller;
 
+import cl.diego.balance.commons.rest.domain.BadInputException;
 import cl.diego.balance.commons.rest.exception.ApiException;
 import cl.diego.balance.users.app.users.dto.RoleDto;
 import cl.diego.balance.users.app.users.dto.UserDto;
-import cl.diego.balance.users.app.users.exception.BadInputException;
 import cl.diego.balance.users.app.users.exception.UserNotFoundException;
 import cl.diego.balance.users.app.users.service.UserService;
 import cl.diego.balance.users.app.users.service.UserServiceImpl;
@@ -33,24 +33,19 @@ class UserControllerTest {
     void createUserTest_ok( ) {
 
         // Prepare Data
-        RoleDto role = RoleDto.builder()
-                .id( 1L )
-                .name( "ADMIN" )
-                .build();
+        RoleDto role = getAdminRole( );
 
-        UserDto user = UserDto.builder( )
-                .password( "Tommy" )
-                .role( role )
-                .build( );
+        UserDto user = getUser( role );
 
         // Set Environment
-        doNothing( ).when( userService ).saveUser( user );
+        when( userService.saveUser( user ) )
+                .thenReturn( "1" );
 
         // Execute
-        ResponseEntity reponse = userController.createUser( user );
+        ResponseEntity response = userController.createUser( user );
 
         // Assertions
-        assertEquals( HttpStatus.OK, reponse.getStatusCode( ) );
+        assertEquals( HttpStatus.OK, response.getStatusCode( ) );
 
         // Verify
         verify( userService, times( 1 ) )
@@ -61,15 +56,9 @@ class UserControllerTest {
     void createUserTest_error( ) {
 
         // Prepare Data
-        RoleDto role = RoleDto.builder()
-                .id( 1L )
-                .name( "ADMIN" )
-                .build();
+        RoleDto role = getAdminRole( );
 
-        UserDto user = UserDto.builder( )
-                .password( "Tommy" )
-                .role( role )
-                .build( );
+        UserDto user = getUser( role );
 
         // Set Environment
         doThrow( new BadInputException( ) ).when( userService ).saveUser( user );
@@ -127,15 +116,9 @@ class UserControllerTest {
     void updateUserTest_ok( ) {
 
         // Prepare Data
-        RoleDto role = RoleDto.builder()
-                .id( 1L )
-                .name( "ADMIN" )
-                .build();
+        RoleDto role = getAdminRole( );
 
-        UserDto user = UserDto.builder( )
-                .password( "Tommy" )
-                .role( role )
-                .build( );
+        UserDto user = getUser( role );
 
         // Set Environment
         doNothing( ).when( userService ).updateUser( user );
@@ -155,15 +138,9 @@ class UserControllerTest {
     void updateUserTest_error( ) {
 
         // Prepare Data
-        RoleDto role = RoleDto.builder()
-                .id( 1L )
-                .name( "ADMIN" )
-                .build();
+        RoleDto role = getAdminRole( );
 
-        UserDto user = UserDto.builder( )
-                .password( "Tommy" )
-                .role( role )
-                .build( );
+        UserDto user = getUser( role );
 
         // Set Environment
         doThrow( new BadInputException( ) ).when( userService ).updateUser( user );
@@ -212,5 +189,19 @@ class UserControllerTest {
         // Verify
         verify( userService, times( 1 ) )
                 .deleteUser( anyLong( ) );
+    }
+
+    private static UserDto getUser(RoleDto role) {
+        return UserDto.builder( )
+                .password( "Tommy" )
+                .role( role )
+                .build( );
+    }
+
+    private static RoleDto getAdminRole( ) {
+        return RoleDto.builder( )
+                .id( "1" )
+                .name( "ADMIN" )
+                .build( );
     }
 }

@@ -1,22 +1,21 @@
-package cl.diego.balance.users.app.users.repository.domain;
+package cl.diego.balance.users.app.users.repository.mongodb.domain;
 
 import cl.diego.balance.users.app.users.dto.RoleDto;
-import jakarta.persistence.*;
+
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@Entity
-@Table( schema = "public", name = "role" )
-@ToString
+@Document(collection = "roles")
 public class Role {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private Long   id;
+    private String id;
     private String name;
 
     public RoleDto toRole( ) {
